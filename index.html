@@ -9,15 +9,50 @@
 
   body {
     font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #fdf6f0;
+    background: linear-gradient(180deg, #fdf6f0 0%, #fce8e8 100%);
     color: #4a4a4a;
     line-height: 1.8;
+    overflow-x: hidden;
   }
 
-  /* 顶部标题 */
+  /* ========== 樱花花瓣层 ========== */
+  #sakura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;   /* 不挡点击 */
+    z-index: 1;
+    overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    top: -30px;
+    background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.8;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(-30px) rotate(0deg) translateX(0);
+      opacity: 0;
+    }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% {
+      transform: translateY(105vh) rotate(720deg) translateX(80px);
+      opacity: 0;
+    }
+  }
+
+  /* ========== 顶部标题 ========== */
   header {
+    position: relative;
+    z-index: 2;
     text-align: center;
-    padding: 100px 20px 60px;
+    padding: 100px 20px 40px;
   }
   header h1 {
     font-size: 2.4rem;
@@ -30,15 +65,47 @@
     font-size: 1rem;
   }
 
-  /* 时间线容器 */
+  /* ========== 天数计数器 ========== */
+  .counter {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin: 20px auto 60px;
+    padding: 30px 20px;
+    max-width: 500px;
+  }
+  .counter .label {
+    font-size: 0.9rem;
+    color: #b08a8a;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .counter .number {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #d98c8c;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(217, 140, 140, 0.25);
+  }
+  .counter .unit {
+    font-size: 1.2rem;
+    color: #b08a8a;
+    margin-left: 8px;
+  }
+  .counter .since {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: #bbb;
+  }
+
+  /* ========== 时间线 ========== */
   .timeline {
     position: relative;
+    z-index: 2;
     max-width: 900px;
     margin: 0 auto;
     padding: 40px 20px 120px;
   }
-
-  /* 中间那条竖线 */
   .timeline::before {
     content: "";
     position: absolute;
@@ -49,8 +116,6 @@
     background: #e8c4c4;
     transform: translateX(-50%);
   }
-
-  /* 每个事件 */
   .event {
     position: relative;
     width: 50%;
@@ -63,19 +128,8 @@
     opacity: 1;
     transform: translateY(0);
   }
-
-  /* 左边的事件 */
-  .event.left {
-    left: 0;
-    text-align: right;
-  }
-  /* 右边的事件 */
-  .event.right {
-    left: 50%;
-    text-align: left;
-  }
-
-  /* 中间的小圆点 */
+  .event.left { left: 0; text-align: right; }
+  .event.right { left: 50%; text-align: left; }
   .event::after {
     content: "";
     position: absolute;
@@ -87,14 +141,9 @@
     border-radius: 50%;
     box-shadow: 0 0 0 2px #e8c4c4;
   }
-  .event.left::after {
-    right: -8px;
-  }
-  .event.right::after {
-    left: -8px;
-  }
+  .event.left::after { right: -8px; }
+  .event.right::after { left: -8px; }
 
-  /* 日期 */
   .event .date {
     font-size: 0.9rem;
     color: #d98c8c;
@@ -102,8 +151,6 @@
     letter-spacing: 1px;
     margin-bottom: 8px;
   }
-
-  /* 内容卡片 */
   .event .card {
     background: #fff;
     padding: 20px 24px;
@@ -129,8 +176,9 @@
     display: block;
   }
 
-  /* 结尾 */
   .ending {
+    position: relative;
+    z-index: 2;
     text-align: center;
     padding: 80px 20px 120px;
     color: #d98c8c;
@@ -138,7 +186,6 @@
     letter-spacing: 2px;
   }
 
-  /* 手机适配 */
   @media (max-width: 700px) {
     .timeline::before { left: 20px; }
     .event {
@@ -152,48 +199,57 @@
       left: 13px !important;
       right: auto !important;
     }
+    .counter .number { font-size: 3rem; }
   }
 </style>
 </head>
 <body>
+
+<!-- 樱花花瓣容器 -->
+<div id="sakura"></div>
 
 <header>
   <h1>我们的故事</h1>
   <p>从遇见你开始，每一刻都值得记住</p>
 </header>
 
+<!-- 天数计数器 -->
+<div class="counter">
+  <div class="label">我们已经在一起</div>
+  <div>
+    <span class="number" id="days">0</span>
+    <span class="unit">天</span>
+  </div>
+  <div class="since">从 2023 年 1 月 5 日 至今</div>
+</div>
+
 <div class="timeline">
 
-  <!-- 事件 1 -->
   <div class="event left">
-    <div class="date">2022 年 3 月</div>
+    <div class="date">2023 年 1 月 5 日</div>
     <div class="card">
-      <h3>第一次遇见</h3>
-      <p>那天在咖啡店，你点了一杯拿铁，我鼓起勇气跟你搭了话。</p>
+      <h3>故事开始</h3>
+      <p>那一天，我们决定在一起。</p>
     </div>
   </div>
 
-  <!-- 事件 2 -->
   <div class="event right">
-    <div class="date">2022 年 5 月</div>
+    <div class="date">2023 年 5 月</div>
     <div class="card">
       <h3>第一次约会</h3>
       <p>我们去了那家小电影院，看了一部谁都没认真看的电影。</p>
     </div>
   </div>
 
-  <!-- 事件 3（带图片） -->
   <div class="event left">
-    <div class="date">2023 年 1 月</div>
+    <div class="date">2024 年 1 月</div>
     <div class="card">
       <h3>一起旅行</h3>
       <p>第一次一起出远门，在海边看了日落。</p>
-      <!-- 把 photo1.jpg 换成你上传的图片文件名 -->
       <img src="photo1.jpg" alt="海边日落">
     </div>
   </div>
 
-  <!-- 事件 4 -->
   <div class="event right">
     <div class="date">2024 年 6 月</div>
     <div class="card">
@@ -202,7 +258,6 @@
     </div>
   </div>
 
-  <!-- 事件 5 -->
   <div class="event left">
     <div class="date">现在</div>
     <div class="card">
@@ -211,42 +266,67 @@
     </div>
   </div>
 
-  <!-- 事件 6 -->
-  <div class="event right">
-    <div class="date">2024 年 2 月</div>
-    <div class="card">
-      <h3>我生病了</h3>
-      <p>你不顾他人反对独自下来找我。</p>
-    </div>
-  </div>
-
-   <!-- 事件 7 -->
-  <div class="event left">
-    <div class="date">2025 年 7 月</div>
-    <div class="card">
-      <h3>一起散心</h3>
-      <p>散心。</p>
-    </div>
-  </div>
-
 </div>
 
 <div class="ending">❤ 未完待续 ❤</div>
 
 <script>
-  // 滚动时淡入效果
-  const events = document.querySelectorAll('.event');
+  /* ========== 1. 天数计算 ========== */
+  // 改这里：把日期改成你们在一起的日期
+  const startDate = new Date("2023-01-05T00:00:00");
 
+  function updateDays() {
+    const now = new Date();
+    const diff = now - startDate;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById("days").textContent = days.toLocaleString();
+  }
+  updateDays();
+  // 每天自动刷新一次
+  setInterval(updateDays, 1000 * 60 * 60);
+
+  /* ========== 2. 樱花花瓣 ========== */
+  const sakuraContainer = document.getElementById("sakura");
+  const PETAL_COUNT = 25;  // 花瓣数量，想多一点就改大
+
+  function createPetal() {
+    const petal = document.createElement("div");
+    petal.className = "petal";
+
+    // 随机大小
+    const size = Math.random() * 12 + 8;   // 8px ~ 20px
+    petal.style.width = size + "px";
+    petal.style.height = size + "px";
+
+    // 随机水平位置
+    petal.style.left = Math.random() * 100 + "vw";
+
+    // 随机动画时长（下落速度）
+    const duration = Math.random() * 8 + 8;  // 8s ~ 16s
+    petal.style.animationDuration = duration + "s";
+
+    // 随机延迟，让花瓣错开出现
+    petal.style.animationDelay = Math.random() * 10 + "s";
+
+    // 随机透明度
+    petal.style.opacity = Math.random() * 0.5 + 0.4;
+
+    sakuraContainer.appendChild(petal);
+  }
+
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    createPetal();
+  }
+
+  /* ========== 3. 滚动淡入 ========== */
+  const events = document.querySelectorAll(".event");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('show');
+        entry.target.classList.add("show");
       }
     });
-  }, {
-    threshold: 0.15
-  });
-
+  }, { threshold: 0.15 });
   events.forEach(event => observer.observe(event));
 </script>
 
