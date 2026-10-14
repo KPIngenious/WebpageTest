@@ -22,7 +22,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;   /* 不挡点击 */
+    pointer-events: none;
     z-index: 1;
     overflow: hidden;
   }
@@ -65,14 +65,14 @@
     font-size: 1rem;
   }
 
-  /* ========== 天数计数器 ========== */
+  /* ========== 计数器 ========== */
   .counter {
     position: relative;
     z-index: 2;
     text-align: center;
     margin: 20px auto 60px;
     padding: 30px 20px;
-    max-width: 500px;
+    max-width: 600px;
   }
   .counter .label {
     font-size: 0.9rem;
@@ -91,6 +91,13 @@
     font-size: 1.2rem;
     color: #b08a8a;
     margin-left: 8px;
+  }
+  .counter .detail {
+    margin-top: 18px;
+    font-size: 1.05rem;
+    color: #a87c7c;
+    letter-spacing: 1px;
+    font-weight: 500;
   }
   .counter .since {
     margin-top: 14px;
@@ -200,6 +207,7 @@
       right: auto !important;
     }
     .counter .number { font-size: 3rem; }
+    .counter .detail { font-size: 0.9rem; }
   }
 </style>
 </head>
@@ -213,16 +221,23 @@
   <p>从遇见你开始，每一刻都值得记住</p>
 </header>
 
-<!-- 天数计数器 -->
+<!-- 计数器 -->
 <div class="counter">
   <div class="label">我们已经在一起</div>
+
   <div>
     <span class="number" id="days">0</span>
     <span class="unit">天</span>
   </div>
+
+  <div class="detail" id="detail">
+    0 年 0 月 0 天 0 小时 0 分 0 秒
+  </div>
+
   <div class="since">从 2023 年 1 月 5 日 至今</div>
 </div>
 
+<!-- 时间线 -->
 <div class="timeline">
 
   <div class="event left">
@@ -246,6 +261,7 @@
     <div class="card">
       <h3>一起旅行</h3>
       <p>第一次一起出远门，在海边看了日落。</p>
+      <!-- 把 photo1.jpg 换成你上传的图片文件名 -->
       <img src="photo1.jpg" alt="海边日落">
     </div>
   </div>
@@ -271,44 +287,60 @@
 <div class="ending">❤ 未完待续 ❤</div>
 
 <script>
-  /* ========== 1. 天数计算 ========== */
+  /* ========== 1. 天数 + 年月日时分秒 ========== */
   // 改这里：把日期改成你们在一起的日期
   const startDate = new Date("2023-01-05T00:00:00");
 
-  function updateDays() {
+  function updateCounter() {
     const now = new Date();
-    const diff = now - startDate;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    document.getElementById("days").textContent = days.toLocaleString();
+
+    // ---- 总天数 ----
+    const diffMs = now - startDate;
+    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    document.getElementById("days").textContent = totalDays.toLocaleString();
+
+    // ---- 年月日时分秒 ----
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    let hours = now.getHours() - startDate.getHours();
+    let minutes = now.getMinutes() - startDate.getMinutes();
+    let seconds = now.getSeconds() - startDate.getSeconds();
+
+    if (seconds < 0) { seconds += 60; minutes--; }
+    if (minutes < 0) { minutes += 60; hours--; }
+    if (hours < 0)   { hours += 24; days--; }
+    if (days < 0) {
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += prevMonth;
+      months--;
+    }
+    if (months < 0) { months += 12; years--; }
+
+    document.getElementById("detail").textContent =
+      `${years} 年 ${months} 月 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
   }
-  updateDays();
-  // 每天自动刷新一次
-  setInterval(updateDays, 1000 * 60 * 60);
+
+  updateCounter();
+  setInterval(updateCounter, 1000);
 
   /* ========== 2. 樱花花瓣 ========== */
   const sakuraContainer = document.getElementById("sakura");
-  const PETAL_COUNT = 25;  // 花瓣数量，想多一点就改大
+  const PETAL_COUNT = 25;
 
   function createPetal() {
     const petal = document.createElement("div");
     petal.className = "petal";
 
-    // 随机大小
-    const size = Math.random() * 12 + 8;   // 8px ~ 20px
+    const size = Math.random() * 12 + 8;
     petal.style.width = size + "px";
     petal.style.height = size + "px";
 
-    // 随机水平位置
     petal.style.left = Math.random() * 100 + "vw";
 
-    // 随机动画时长（下落速度）
-    const duration = Math.random() * 8 + 8;  // 8s ~ 16s
+    const duration = Math.random() * 8 + 8;
     petal.style.animationDuration = duration + "s";
-
-    // 随机延迟，让花瓣错开出现
     petal.style.animationDelay = Math.random() * 10 + "s";
-
-    // 随机透明度
     petal.style.opacity = Math.random() * 0.5 + 0.4;
 
     sakuraContainer.appendChild(petal);
