@@ -1,16 +1,236 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的网站</title>
-  <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; }
-    h1 { color: #333; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我们的故事</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #fdf6f0;
+    color: #4a4a4a;
+    line-height: 1.8;
+  }
+
+  /* 顶部标题 */
+  header {
+    text-align: center;
+    padding: 100px 20px 60px;
+  }
+  header h1 {
+    font-size: 2.4rem;
+    color: #d98c8c;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+  header p {
+    color: #999;
+    font-size: 1rem;
+  }
+
+  /* 时间线容器 */
+  .timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 120px;
+  }
+
+  /* 中间那条竖线 */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e8c4c4;
+    transform: translateX(-50%);
+  }
+
+  /* 每个事件 */
+  .event {
+    position: relative;
+    width: 50%;
+    padding: 20px 40px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+  .event.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 左边的事件 */
+  .event.left {
+    left: 0;
+    text-align: right;
+  }
+  /* 右边的事件 */
+  .event.right {
+    left: 50%;
+    text-align: left;
+  }
+
+  /* 中间的小圆点 */
+  .event::after {
+    content: "";
+    position: absolute;
+    top: 30px;
+    width: 14px;
+    height: 14px;
+    background: #d98c8c;
+    border: 3px solid #fdf6f0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #e8c4c4;
+  }
+  .event.left::after {
+    right: -8px;
+  }
+  .event.right::after {
+    left: -8px;
+  }
+
+  /* 日期 */
+  .event .date {
+    font-size: 0.9rem;
+    color: #d98c8c;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  /* 内容卡片 */
+  .event .card {
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(217, 140, 140, 0.12);
+    display: inline-block;
+    text-align: left;
+    max-width: 100%;
+  }
+  .event .card h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .event .card p {
+    font-size: 0.95rem;
+    color: #777;
+  }
+  .event .card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 12px;
+    display: block;
+  }
+
+  /* 结尾 */
+  .ending {
+    text-align: center;
+    padding: 80px 20px 120px;
+    color: #d98c8c;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  /* 手机适配 */
+  @media (max-width: 700px) {
+    .timeline::before { left: 20px; }
+    .event {
+      width: 100%;
+      left: 0 !important;
+      text-align: left;
+      padding-left: 60px;
+      padding-right: 10px;
+    }
+    .event::after {
+      left: 13px !important;
+      right: auto !important;
+    }
+  }
+</style>
 </head>
 <body>
-  <h1>你好，欢迎来到我的网站</h1>
-  <p>这里是一些介绍文字。</p>
+
+<header>
+  <h1>我们的故事</h1>
+  <p>从遇见你开始，每一刻都值得记住</p>
+</header>
+
+<div class="timeline">
+
+  <!-- 事件 1 -->
+  <div class="event left">
+    <div class="date">2022 年 3 月</div>
+    <div class="card">
+      <h3>第一次遇见</h3>
+      <p>那天在咖啡店，你点了一杯拿铁，我鼓起勇气跟你搭了话。</p>
+    </div>
+  </div>
+
+  <!-- 事件 2 -->
+  <div class="event right">
+    <div class="date">2022 年 5 月</div>
+    <div class="card">
+      <h3>第一次约会</h3>
+      <p>我们去了那家小电影院，看了一部谁都没认真看的电影。</p>
+    </div>
+  </div>
+
+  <!-- 事件 3（带图片） -->
+  <div class="event left">
+    <div class="date">2023 年 1 月</div>
+    <div class="card">
+      <h3>一起旅行</h3>
+      <p>第一次一起出远门，在海边看了日落。</p>
+      <!-- 把 photo1.jpg 换成你上传的图片文件名 -->
+      <img src="photo1.jpg" alt="海边日落">
+    </div>
+  </div>
+
+  <!-- 事件 4 -->
+  <div class="event right">
+    <div class="date">2024 年 6 月</div>
+    <div class="card">
+      <h3>一起搬家</h3>
+      <p>有了属于我们两个人的小窝。</p>
+    </div>
+  </div>
+
+  <!-- 事件 5 -->
+  <div class="event left">
+    <div class="date">现在</div>
+    <div class="card">
+      <h3>还在继续</h3>
+      <p>故事还很长，慢慢写下去。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="ending">❤ 未完待续 ❤</div>
+
+<script>
+  // 滚动时淡入效果
+  const events = document.querySelectorAll('.event');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, {
+    threshold: 0.15
+  });
+
+  events.forEach(event => observer.observe(event));
+</script>
+
 </body>
 </html>
