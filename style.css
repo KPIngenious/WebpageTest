@@ -1,0 +1,207 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(180deg, #fdf6f0 0%, #fce8e8 100%);
+  color: #4a4a4a;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ========== 樱花花瓣层 ========== */
+#sakura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  top: -30px;
+  background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
+  border-radius: 50% 0 50% 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% {
+    transform: translateY(-30px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.9; }
+  100% {
+    transform: translateY(105vh) rotate(720deg) translateX(80px);
+    opacity: 0;
+  }
+}
+
+/* ========== 顶部标题 ========== */
+header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 100px 20px 40px;
+}
+header h1 {
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", serif;
+  font-size: 3.2rem;
+  color: #d98c8c;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+}
+header p {
+  color: #999;
+  font-size: 1rem;
+}
+
+/* ========== 计数器 ========== */
+.counter {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin: 20px auto 60px;
+  padding: 30px 20px;
+  max-width: 600px;
+}
+.counter .label {
+  font-size: 0.9rem;
+  color: #b08a8a;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.counter .number {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #d98c8c;
+  line-height: 1;
+  text-shadow: 0 4px 20px rgba(217, 140, 140, 0.25);
+}
+.counter .unit {
+  font-size: 1.2rem;
+  color: #b08a8a;
+  margin-left: 8px;
+}
+.counter .detail {
+  margin-top: 18px;
+  font-size: 1.05rem;
+  color: #a87c7c;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.counter .since {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: #bbb;
+}
+
+/* ========== 时间线 ========== */
+.timeline {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 120px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e8c4c4;
+  transform: translateX(-50%);
+}
+.event {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+.event.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.event.left { left: 0; text-align: right; }
+.event.right { left: 50%; text-align: left; }
+.event::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  width: 14px;
+  height: 14px;
+  background: #d98c8c;
+  border: 3px solid #fdf6f0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #e8c4c4;
+}
+.event.left::after { right: -8px; }
+.event.right::after { left: -8px; }
+
+.event .date {
+  font-size: 0.9rem;
+  color: #d98c8c;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.event .card {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(217, 140, 140, 0.12);
+  display: inline-block;
+  text-align: left;
+  max-width: 100%;
+}
+.event .card h3 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+.event .card p {
+  font-size: 0.95rem;
+  color: #777;
+}
+.event .card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 12px;
+  display: block;
+}
+
+.ending {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 80px 20px 120px;
+  color: #d98c8c;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+/* ========== 手机适配 ========== */
+@media (max-width: 700px) {
+  .timeline::before { left: 20px; }
+  .event {
+    width: 100%;
+    left: 0 !important;
+    text-align: left;
+    padding-left: 60px;
+    padding-right: 10px;
+  }
+  .event::after {
+    left: 20px !important;
+    transform: translateX(-50%);
+    right: auto !important;
+  }
+  .counter .number { font-size: 3rem; }
+  .counter .detail { font-size: 0.9rem; }
+}
