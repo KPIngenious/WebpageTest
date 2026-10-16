@@ -237,37 +237,34 @@ header p {
 
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
-  /* 竖线靠左 */
   .timeline::before {
     left: 20px;
   }
 
-  /* 所有事件都靠左排列，覆盖 .left 和 .right 的默认设置 */
   .event,
   .event.left,
   .event.right {
     width: 100%;
     left: 0 !important;
-    text-align: left !important;   /* 强制靠左 */
+    text-align: left !important;
     padding-left: 60px;
     padding-right: 10px;
   }
 
-  /* 圆点对齐竖线：left 20px + 自身宽度一半回退 */
+  /* 圆点对准竖线中心 */
   .event::after,
   .event.left::after,
   .event.right::after {
-    left: 20px !important;
+    left: 21px !important;      /* 竖线中心 */
     right: auto !important;
-    transform: translateX(-50%);
+    margin-left: -10px;         /* 自身宽度的一半：14px + 3px*2 = 20px，一半是 10px */
+    transform: none;            /* 取消电脑上的 transform，避免冲突 */
   }
 
-  /* 卡片也靠左 */
   .event .card {
     text-align: left;
   }
 
-  /* 数字和详情字号缩小 */
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
 }
