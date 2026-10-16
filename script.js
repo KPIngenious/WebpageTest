@@ -77,43 +77,63 @@ setInterval(updateCounter, 1000);
 
 /* ========== 2. 樱花花瓣 ========== */
 const sakuraContainer = document.getElementById("sakura");
-const PETAL_COUNT = 25;
-const PETAL_INTERVAL = 800;
+const PETAL_COUNT = 25;       // 初始铺满屏幕的花瓣数量
+const PETAL_INTERVAL = 800;   // 每隔多少毫秒生成一片新花瓣
+const MAX_PETALS = 60;        // 页面里最多同时存在多少片
 
 function createPetal(instant) {
+  // 硬性上限：超过就直接不加
+  if (sakuraContainer.children.length >= MAX_PETALS) {
+    return;
+  }
+
   const petal = document.createElement("div");
   petal.className = "petal";
 
   const size = Math.random() * 12 + 8;
   petal.style.width = size + "px";
   petal.style.height = size + "px";
-
   petal.style.left = Math.random() * 100 + "vw";
 
-  const duration = Math.random() * 8 + 8;
+  const duration = Math.random() * 8 + 8;   // 8~16 秒
   petal.style.animationDuration = duration + "s";
 
   if (instant) {
+    // 一打开就分布在整个屏幕
     petal.style.animationDelay = (-Math.random() * duration) + "s";
   } else {
-    petal.style.animationDelay = Math.random() * 2 + "s";
+    petal.style.animationDelay = "0s";
   }
 
   petal.style.opacity = Math.random() * 0.5 + 0.4;
 
-  // 关键：动画结束后自动删除这个 div，避免累积
-  petal.addEventListener("animationend", () => {
-    petal.remove();
-  });
-
   sakuraContainer.appendChild(petal);
+
+  // 关键：不管动画有没有正常结束，到时间就手动删
+  const lifeTime = (duration + 3) * 1000;   // 动画时长 + 3 秒缓冲
+  setTimeout(() => {
+    if (petal.parentNode) {
+      petal.remove();
+    }
+  }, lifeTime);
 }
 
+// 先铺满屏幕
 for (let i = 0; i < PETAL_COUNT; i++) {
   createPetal(true);
 }
 
-setInterval(() => createPetal(false), PETAL_INTERVAL);
+// 之后持续生成
+let petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
+
+// 切到后台时暂停生成，回来再继续
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(petalTimer);
+  } else {
+    petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
+  }
+});
 
 /* ========== 3. 滚动淡入 ========== */
 const events = document.querySelectorAll(".event");
