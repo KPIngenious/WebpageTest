@@ -93,6 +93,25 @@ header p {
   letter-spacing: 1px;
   font-weight: 500;
 }
+
+.counter .detail .num {
+  display: inline-block;
+  min-width: 1.6em;
+  text-align: center;
+  color: #d98c8c;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.counter .detail .num.flip {
+  animation: flipNum 0.4s ease;
+}
+
+@keyframes flipNum {
+  0%   { transform: translateY(-6px) scale(1.15); opacity: 0.4; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
 .counter .since {
   margin-top: 14px;
   font-size: 0.85rem;
@@ -187,21 +206,68 @@ header p {
   letter-spacing: 2px;
 }
 
+/* style.css 加 */
+.event .card img { cursor: pointer; }
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.lightbox.show { display: flex; }
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.event .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.event .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(217, 140, 140, 0.25);
+}
+
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
-  .timeline::before { left: 20px; }
-  .event {
+  /* 竖线靠左 */
+  .timeline::before {
+    left: 20px;
+  }
+
+  /* 所有事件都靠左排列，覆盖 .left 和 .right 的默认设置 */
+  .event,
+  .event.left,
+  .event.right {
     width: 100%;
     left: 0 !important;
-    text-align: left;
+    text-align: left !important;   /* 强制靠左 */
     padding-left: 60px;
     padding-right: 10px;
   }
-  .event::after {
+
+  /* 圆点对齐竖线：left 20px + 自身宽度一半回退 */
+  .event::after,
+  .event.left::after,
+  .event.right::after {
     left: 20px !important;
-    transform: translateX(-50%);
     right: auto !important;
+    transform: translateX(-50%);
   }
+
+  /* 卡片也靠左 */
+  .event .card {
+    text-align: left;
+  }
+
+  /* 数字和详情字号缩小 */
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
 }
