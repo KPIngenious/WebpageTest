@@ -76,6 +76,7 @@ updateCounter();
 setInterval(updateCounter, 1000);
 
 /* ========== 2. 樱花花瓣 ========== */
+/* ========== 2. 樱花花瓣 ========== */
 const sakuraContainer = document.getElementById("sakura");
 const PETAL_COUNT = 25;       // 初始铺满屏幕的花瓣数量
 const PETAL_INTERVAL = 800;   // 每隔多少毫秒生成一片新花瓣
@@ -105,16 +106,26 @@ function createPetal(instant) {
     petal.style.animationDelay = "0s";
   }
 
-  petal.style.opacity = Math.random() * 0.5 + 0.4;
+  const baseOpacity = Math.random() * 0.5 + 0.4;
+  petal.style.opacity = baseOpacity;
 
   sakuraContainer.appendChild(petal);
 
-  // 关键：不管动画有没有正常结束，到时间就手动删
+  // 到时间后先淡出，再删掉
   const lifeTime = (duration + 3) * 1000;   // 动画时长 + 3 秒缓冲
   setTimeout(() => {
-    if (petal.parentNode) {
-      petal.remove();
-    }
+    if (!petal.parentNode) return;
+
+    // 开始淡出
+    petal.style.transition = "opacity 1.2s ease";
+    petal.style.opacity = "0";
+
+    // 等淡出结束再删除
+    setTimeout(() => {
+      if (petal.parentNode) {
+        petal.remove();
+      }
+    }, 1200);
   }, lifeTime);
 }
 
@@ -123,17 +134,8 @@ for (let i = 0; i < PETAL_COUNT; i++) {
   createPetal(true);
 }
 
-// 之后持续生成
-let petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
-
-// 切到后台时暂停生成，回来再继续
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    clearInterval(petalTimer);
-  } else {
-    petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
-  }
-});
+// 之后持续生成（切后台也不暂停）
+setInterval(() => createPetal(false), PETAL_INTERVAL);
 
 /* ========== 3. 滚动淡入 ========== */
 const events = document.querySelectorAll(".event");
