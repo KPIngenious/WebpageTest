@@ -1,4 +1,4 @@
-/* ========== 浪漫主题（默认） ========== */
+/* ========== 浪漫主题 ========== */
 :root {
   --bg-top: #fdf6f0;
   --bg-bottom: #fce8e8;
@@ -81,7 +81,8 @@ body {
 /* ========== 主题切换按钮 ========== */
 .theme-btn {
   position: fixed;
-  top: 20px;
+  top: auto;
+  bottom: 20px;
   right: 20px;
   width: 48px;
   height: 48px;
@@ -249,6 +250,7 @@ body.theme-fun .counter .number {
   transform: translate(-50%, -50%);
   transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
 }
+
 /* 已经过的节点 */
 .milestone-node.passed {
   background: var(--main);
