@@ -93,7 +93,6 @@ header p {
   letter-spacing: 1px;
   font-weight: 500;
 }
-
 .counter .detail .num {
   display: inline-block;
   min-width: 1.6em;
@@ -102,16 +101,13 @@ header p {
   font-weight: bold;
   transition: transform 0.2s ease;
 }
-
 .counter .detail .num.flip {
   animation: flipNum 0.4s ease;
 }
-
 @keyframes flipNum {
   0%   { transform: translateY(-6px) scale(1.15); opacity: 0.4; }
   100% { transform: translateY(0) scale(1); opacity: 1; }
 }
-
 .counter .since {
   margin-top: 14px;
   font-size: 0.85rem;
@@ -148,6 +144,11 @@ header p {
   opacity: 1;
   transform: translateY(0);
 }
+.event.fade-out {
+  opacity: 0.15;
+  transform: translateY(-20px);
+  transition: all 0.6s ease;
+}
 .event.left { left: 0; text-align: right; }
 .event.right { left: 50%; text-align: left; }
 .event::after {
@@ -179,6 +180,11 @@ header p {
   display: inline-block;
   text-align: left;
   max-width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.event .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(217, 140, 140, 0.25);
 }
 .event .card h3 {
   font-size: 1.1rem;
@@ -194,6 +200,7 @@ header p {
   border-radius: 8px;
   margin-top: 12px;
   display: block;
+  cursor: pointer;
 }
 
 .ending {
@@ -206,9 +213,7 @@ header p {
   letter-spacing: 2px;
 }
 
-/* style.css 加 */
-.event .card img { cursor: pointer; }
-
+/* ========== 图片放大遮罩 ========== */
 .lightbox {
   display: none;
   position: fixed;
@@ -227,27 +232,16 @@ header p {
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
-.event .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.event .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(217, 140, 140, 0.25);
-}
-
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
   .timeline {
     padding-left: 0;
     padding-right: 0;
   }
-
   .timeline::before {
     left: 18px;
     transform: none;
   }
-
-  /* 关键：每个选择器都加 !important，确保覆盖电脑端规则 */
   .event,
   .event.left,
   .event.right {
@@ -258,7 +252,6 @@ header p {
     padding-right: 10px !important;
     margin-left: 0 !important;
   }
-
   .event::after,
   .event.left::after,
   .event.right::after {
@@ -267,7 +260,6 @@ header p {
     transform: none !important;
     margin-left: -10px !important;
   }
-
   .event .card {
     display: block;
     text-align: left;
@@ -275,7 +267,6 @@ header p {
   .event .date {
     text-align: left;
   }
-
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
 }
