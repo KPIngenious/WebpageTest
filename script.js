@@ -54,8 +54,8 @@ setInterval(updateCounter, 1000);
 /* ========== 2. 樱花花瓣 ========== */
 const sakuraContainer = document.getElementById("sakura");
 const PETAL_COUNT = 25;
-const PETAL_INTERVAL = 800;
-const MAX_PETALS = 60;   // 同时存在的花瓣上限
+const PETAL_INTERVAL = 1500;
+const MAX_PETALS = 25;   // 同时存在的花瓣上限
 
 function createPetal(instant) {
   // 达到上限就不生成新的
