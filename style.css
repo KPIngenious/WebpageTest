@@ -1,14 +1,43 @@
+/* ========== 浪漫主题（默认） ========== */
+:root {
+  --bg-top: #fdf6f0;
+  --bg-bottom: #fce8e8;
+  --main: #d98c8c;
+  --main-light: #e8c4c4;
+  --text: #4a4a4a;
+  --text-light: #999;
+  --text-mid: #a87c7c;
+  --card-bg: #ffffff;
+  --dot-border: #fdf6f0;
+  --petal-bg: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
+}
+
+/* ========== 万兽之王主题 ========== */
+body.theme-fun {
+  --bg-top: #0a0a0f;
+  --bg-bottom: #1a1215;
+  --main: #c9a04a;
+  --main-light: #4a3a28;
+  --text: #e8dcc8;
+  --text-light: #8a7a68;
+  --text-mid: #b8a898;
+  --card-bg: #151014;
+  --dot-border: #0a0a0f;
+  --petal-bg: none;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: linear-gradient(180deg, #fdf6f0 0%, #fce8e8 100%);
-  color: #4a4a4a;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: var(--text);
   line-height: 1.8;
   overflow-x: hidden;
+  transition: background 0.6s ease, color 0.6s ease;
 }
 
-/* ========== 樱花花瓣层 ========== */
+/* ========== 掉落物层 ========== */
 #sakura {
   position: fixed;
   top: 0;
@@ -22,10 +51,19 @@ body {
 .petal {
   position: absolute;
   top: -30px;
-  background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
+  background: var(--petal-bg);
   border-radius: 50% 0 50% 50%;
   opacity: 0.8;
   animation: fall linear infinite;
+}
+/* 图片 / emoji 型掉落物 */
+.petal.img-petal {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 @keyframes fall {
   0% {
@@ -40,6 +78,26 @@ body {
   }
 }
 
+/* ========== 主题切换按钮 ========== */
+.theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
 /* ========== 顶部标题 ========== */
 header {
   position: relative;
@@ -50,13 +108,23 @@ header {
 header h1 {
   font-family: "Kaiti SC", "KaiTi", "STKaiti", serif;
   font-size: 3.2rem;
-  color: #d98c8c;
+  color: var(--main);
   letter-spacing: 4px;
   margin-bottom: 16px;
+  transition: color 0.6s ease, text-shadow 0.6s ease, font-family 0.3s ease;
 }
 header p {
-  color: #999;
+  color: var(--text-light);
   font-size: 1rem;
+  transition: color 0.6s ease;
+}
+
+/* 万兽之王：标题更硬朗，带金色光晕 */
+body.theme-fun header h1 {
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: 900;
+  letter-spacing: 10px;
+  text-shadow: 0 0 30px rgba(201, 160, 74, 0.35);
 }
 
 /* ========== 计数器 ========== */
@@ -70,26 +138,30 @@ header p {
 }
 .counter .label {
   font-size: 0.9rem;
-  color: #b08a8a;
+  color: var(--text-mid);
   letter-spacing: 2px;
   margin-bottom: 12px;
 }
 .counter .number {
   font-size: 4rem;
   font-weight: bold;
-  color: #d98c8c;
+  color: var(--main);
   line-height: 1;
   text-shadow: 0 4px 20px rgba(217, 140, 140, 0.25);
+  transition: color 0.6s ease, text-shadow 0.6s ease;
+}
+body.theme-fun .counter .number {
+  text-shadow: 0 0 30px rgba(201, 160, 74, 0.4);
 }
 .counter .unit {
   font-size: 1.2rem;
-  color: #b08a8a;
+  color: var(--text-mid);
   margin-left: 8px;
 }
 .counter .detail {
   margin-top: 18px;
   font-size: 1.05rem;
-  color: #a87c7c;
+  color: var(--text-mid);
   letter-spacing: 1px;
   font-weight: 500;
 }
@@ -97,9 +169,9 @@ header p {
   display: inline-block;
   min-width: 1.6em;
   text-align: center;
-  color: #d98c8c;
+  color: var(--main);
   font-weight: bold;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.6s ease;
 }
 .counter .detail .num.flip {
   animation: flipNum 0.4s ease;
@@ -111,7 +183,144 @@ header p {
 .counter .since {
   margin-top: 14px;
   font-size: 0.85rem;
-  color: #bbb;
+  color: var(--text-light);
+}
+
+/* ========== 里程碑进度条 ========== */
+.milestone {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 40px auto 80px;
+  padding: 20px 30px;
+}
+
+.milestone-title {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--main);
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.milestone-bar {
+  position: relative;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+/* 底线 */
+.milestone-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--main-light);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  opacity: 0.4;
+}
+
+/* 已走过的部分 */
+.milestone-fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 4px;
+  width: 0%;
+  background: var(--main);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  transition: width 2.5s ease-out;
+  box-shadow: 0 0 12px var(--main);
+}
+
+/* 里程碑节点 */
+.milestone-node {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--main-light);
+  transform: translate(-50%, -50%);
+  transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+/* 已经过的节点 */
+.milestone-node.passed {
+  background: var(--main);
+  border-color: var(--main);
+  box-shadow: 0 0 10px var(--main);
+}
+/* 经过时闪一下 */
+.milestone-node.pop {
+  animation: nodePop 0.6s ease;
+}
+@keyframes nodePop {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  50%  { transform: translate(-50%, -50%) scale(1.8); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 爱心标记 */
+.milestone-marker {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  font-size: 22px;
+  transform: translate(-50%, -50%);
+  transition: left 2.5s ease-out;
+  z-index: 3;
+  filter: drop-shadow(0 0 6px var(--main));
+}
+
+/* 节点下方的年份标签 */
+.milestone-labels {
+  position: relative;
+  height: 30px;
+}
+.milestone-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--text-light);
+  text-align: center;
+  white-space: nowrap;
+}
+.milestone-label.passed {
+  color: var(--main);
+  font-weight: bold;
+}
+
+/* 底部信息 */
+.milestone-info {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  letter-spacing: 1px;
+}
+.milestone-info span {
+  color: var(--main);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* 手机适配 */
+@media (max-width: 700px) {
+  .milestone {
+    padding: 20px 10px;
+  }
+  .milestone-label {
+    font-size: 0.6rem;
+  }
+  .milestone-title {
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+  }
 }
 
 /* ========== 时间线 ========== */
@@ -129,8 +338,12 @@ header p {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #e8c4c4;
+  background: var(--main-light);
   transform: translateX(-50%);
+  transition: background 0.6s ease;
+}
+body.theme-fun .timeline::before {
+  background: linear-gradient(180deg, #3a2e24 0%, rgba(201,160,74,0.4) 50%, #3a2e24 100%);
 }
 .event {
   position: relative;
@@ -151,49 +364,63 @@ header p {
 }
 .event.left { left: 0; text-align: right; }
 .event.right { left: 50%; text-align: left; }
+
+/* 圆点：颜色跟随主题 */
 .event::after {
   content: "";
   position: absolute;
   top: 30px;
   width: 14px;
   height: 14px;
-  background: #d98c8c;
-  border: 3px solid #fdf6f0;
+  background: var(--main);
+  border: 3px solid var(--dot-border);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px #e8c4c4;
+  box-shadow: 0 0 0 2px var(--main-light);
+  transition: background 0.6s ease, box-shadow 0.6s ease;
 }
 .event.left::after { right: -8px; }
 .event.right::after { left: -8px; }
 
 .event .date {
   font-size: 0.9rem;
-  color: #d98c8c;
+  color: var(--main);
   font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 8px;
+  transition: color 0.6s ease;
 }
 .event .card {
-  background: #fff;
+  background: var(--card-bg);
   padding: 20px 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(217, 140, 140, 0.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   display: inline-block;
   text-align: left;
   max-width: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.6s ease, border-color 0.3s ease;
 }
 .event .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(217, 140, 140, 0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+/* 万兽之王：卡片加金属边框 */
+body.theme-fun .event .card {
+  border: 1px solid #3a2e24;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,160,74,0.08);
+}
+body.theme-fun .event .card:hover {
+  border-color: #5a4a34;
+  box-shadow: 0 10px 32px rgba(201,160,74,0.18), inset 0 1px 0 rgba(201,160,74,0.15);
 }
 .event .card h3 {
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text);
   margin-bottom: 8px;
+  transition: color 0.6s ease;
 }
 .event .card p {
   font-size: 0.95rem;
-  color: #777;
+  color: var(--text-mid);
 }
 .event .card img {
   width: 100%;
@@ -208,9 +435,10 @@ header p {
   z-index: 2;
   text-align: center;
   padding: 80px 20px 120px;
-  color: #d98c8c;
+  color: var(--main);
   font-size: 1.2rem;
   letter-spacing: 2px;
+  transition: color 0.6s ease;
 }
 
 /* ========== 图片放大遮罩 ========== */
