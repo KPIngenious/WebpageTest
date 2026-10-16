@@ -236,36 +236,35 @@ header p {
 }
 
 /* ========== 手机适配 ========== */
-@media (max-width: 900px) {
-  /* 竖线贴到最左边 */
-  .timeline::before {
-    left: 18px;
+@media (max-width: 700px) {
+  .timeline {
+    padding-left: 0;      /* 去掉左边 padding */
+    padding-right: 0;
   }
 
-  /* 事件整体往右让出空间 */
+  .timeline::before {
+    left: 18px;
+    transform: none;      /* 取消偏移 */
+  }
+
   .event,
   .event.left,
   .event.right {
-    width: 100%;
-    left: 0 !important;
-    text-align: left !important;
-    padding-left: 30px;
+    padding-left: 40px;   /* 事件内容往右让出空间 */
     padding-right: 10px;
   }
 
-  /* 圆点贴在卡片左边缘，不刻意对线 */
   .event::after,
   .event.left::after,
   .event.right::after {
-    left: 0 !important;
+    left: 18px !important;   /* 圆点也放在 18px */
     right: auto !important;
     transform: none;
-    margin-left: 0;
+    margin-left: -10px;      /* 圆点中心对齐 18px */
   }
 
-  .event .card {
-    text-align: left;
-  }
+  .event .card { display: block; text-align: left; }
+  .event .date { text-align: left; }
 
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
