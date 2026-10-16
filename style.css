@@ -238,33 +238,43 @@ header p {
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
   .timeline {
-    padding-left: 0;      /* 去掉左边 padding */
+    padding-left: 0;
     padding-right: 0;
   }
 
   .timeline::before {
     left: 18px;
-    transform: none;      /* 取消偏移 */
+    transform: none;
   }
 
+  /* 关键：每个选择器都加 !important，确保覆盖电脑端规则 */
   .event,
   .event.left,
   .event.right {
-    padding-left: 40px;   /* 事件内容往右让出空间 */
-    padding-right: 10px;
+    width: 100% !important;
+    left: 0 !important;
+    text-align: left !important;
+    padding-left: 40px !important;
+    padding-right: 10px !important;
+    margin-left: 0 !important;
   }
 
   .event::after,
   .event.left::after,
   .event.right::after {
-    left: 18px !important;   /* 圆点也放在 18px */
+    left: 18px !important;
     right: auto !important;
-    transform: none;
-    margin-left: -10px;      /* 圆点中心对齐 18px */
+    transform: none !important;
+    margin-left: -10px !important;
   }
 
-  .event .card { display: block; text-align: left; }
-  .event .date { text-align: left; }
+  .event .card {
+    display: block;
+    text-align: left;
+  }
+  .event .date {
+    text-align: left;
+  }
 
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
