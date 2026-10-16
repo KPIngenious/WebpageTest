@@ -236,10 +236,10 @@ header p {
 }
 
 /* ========== 手机适配 ========== */
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   /* 竖线贴到最左边 */
   .timeline::before {
-    left: 8px;
+    left: 18px;
   }
 
   /* 事件整体往右让出空间 */
