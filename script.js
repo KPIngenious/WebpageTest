@@ -46,7 +46,7 @@ function updateCounter() {
 }
 
 // 打开页面时，天数从 0 滚到真实值
-function animateNumber(el, target, duration = 1200) {
+function animateNumber(el, target, duration = 3.5) {
   const startTime = performance.now();
 
   function step(now) {
@@ -66,22 +66,21 @@ const realDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
 const daysEl = document.getElementById("days");
 daysEl.textContent = "0";
 setTimeout(() => {
-  animateNumber(daysEl, realDays, 2200);   // 2.5 秒滚完
+  animateNumber(daysEl, realDays, 3500);   // 2.5 秒滚完
 }, 300);
 
 // 之后每秒更新（但不再滚动，直接显示真实值）
 setTimeout(() => {
   updateCounter();
   setInterval(updateCounter, 1000);
-}, 2500);
+}, 3800);
 
 
 /* ========== 2. 默认主题（永远浪漫） ========== */
 const themeBtn = document.getElementById("theme-btn");
-//themeBtn.textContent = "🌸";
-//页面默认浪漫。想默认万兽之王，改成：
-document.body.classList.add("theme-fun");
-themeBtn.textContent = "👑";
+themeBtn.textContent = "🌸";
+//document.body.classList.add("theme-fun");
+//themeBtn.textContent = "👑";
 
 
 /* ========== 3. 掉落物 ========== */
@@ -246,7 +245,7 @@ for (let i = 0; i < NODE_COUNT; i++) {
   label.style.left = percent + "%";
   label.dataset.day = day;
   if (i === 0) {
-    label.textContent = "0";
+    label.textContent = "相遇";
   } else {
     label.textContent = (day / 365).toFixed(0) + "年";
   }
@@ -265,29 +264,43 @@ function updateMilestone() {
   const days = getCurrentDays();
   const percent = Math.min((days / TOTAL_DAYS) * 100, 100);
 
-  // 文字
   milestoneDaysEl.textContent = days > TOTAL_DAYS ? TOTAL_DAYS : days;
 
-  // 进度条从 0 推进到 percent
+  // 进度条从 0 跑到 percent
   requestAnimationFrame(() => {
     milestoneFill.style.width = percent + "%";
     milestoneMarker.style.left = percent + "%";
   });
 
-  // 节点和标签逐个亮起
+  // 节点：跟着进度条同步渐变
   const labelEls = milestoneLabels.querySelectorAll(".milestone-label");
-  nodes.forEach((node, i) => {
-    const nodeDay = parseInt(node.dataset.day);
-    if (nodeDay <= days) {
-      // 延迟一点再亮，让动画有层次
-      setTimeout(() => {
-        node.classList.add("passed");
-        node.classList.add("pop");
-        setTimeout(() => node.classList.remove("pop"), 600);
-        if (labelEls[i]) labelEls[i].classList.add("passed");
-      }, 2500 * (nodeDay / TOTAL_DAYS) + 200);   // 和进度条同步
-    }
-  });
+  const startTime = performance.now();
+  const DURATION = 2500;
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / DURATION, 1);
+    const currentDay = days * progress;   // 当前进度对应的天数
+
+    nodes.forEach((node, i) => {
+      const nodeDay = parseInt(node.dataset.day);
+
+      if (nodeDay <= currentDay) {
+        // 已经过了：亮
+        if (!node.classList.contains("passed")) {
+          node.classList.add("passed");
+          if (labelEls[i]) labelEls[i].classList.add("passed");
+        }
+      } else if (nodeDay <= days) {
+        // 还没到，但在终点范围内：按距离渐变
+        const distance = (nodeDay - currentDay) / days;
+        const opacity = Math.max(0, 1 - distance * 10);
+        node.style.opacity = opacity;
+      }
+    });
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 // 页面加载时启动
