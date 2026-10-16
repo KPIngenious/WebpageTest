@@ -1,273 +1,142 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ========== 1. 天数 + 年月日时分秒 ========== */
+const startDate = new Date("2023-01-05T00:00:00");
 
-body {
-  font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: linear-gradient(180deg, #fdf6f0 0%, #fce8e8 100%);
-  color: #4a4a4a;
-  line-height: 1.8;
-  overflow-x: hidden;
-}
+function animateNumber(el, target, duration = 1200) {
+  const start = 0;
+  const startTime = performance.now();
 
-/* ========== 樱花花瓣层 ========== */
-#sakura {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-.petal {
-  position: absolute;
-  top: -30px;
-  background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
-  border-radius: 50% 0 50% 50%;
-  opacity: 0.8;
-  animation: fall linear infinite;
-}
-@keyframes fall {
-  0% {
-    transform: translateY(-30px) rotate(0deg) translateX(0);
-    opacity: 0;
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const value = Math.floor(start + (target - start) * progress);
+    el.textContent = value.toLocaleString();
+    if (progress < 1) requestAnimationFrame(step);
   }
-  10% { opacity: 0.9; }
-  90% { opacity: 0.9; }
-  100% {
-    transform: translateY(105vh) rotate(720deg) translateX(80px);
-    opacity: 0;
+  requestAnimationFrame(step);
+}
+
+// 在 updateCounter 里，第一次调用时用动画
+let firstLoad = true;
+const originalUpdate = updateCounter;
+updateCounter = function() {
+  originalUpdate();
+  if (firstLoad) {
+    firstLoad = false;
+    const days = parseInt(document.getElementById("days").textContent.replace(/,/g, ""));
+    animateNumber(document.getElementById("days"), days);
+  }
+};
+
+function updateCounter() {
+  const now = new Date();
+
+  // ---- 总天数 ----
+  const diffMs = now - startDate;
+  const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  document.getElementById("days").textContent = totalDays.toLocaleString();
+
+  // ---- 年月日时分秒 ----
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
+  let hours = now.getHours() - startDate.getHours();
+  let minutes = now.getMinutes() - startDate.getMinutes();
+  let seconds = now.getSeconds() - startDate.getSeconds();
+
+  if (seconds < 0) { seconds += 60; minutes--; }
+  if (minutes < 0) { minutes += 60; hours--; }
+  if (hours < 0)   { hours += 24; days--; }
+  if (days < 0) {
+    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    days += prevMonth;
+    months--;
+  }
+  if (months < 0) { months += 12; years--; }
+
+  // ---- 更新每个数字，并加跳动动画 ----
+  updateNum("y", years);
+  updateNum("mo", months);
+  updateNum("d", days);
+  updateNum("h", hours);
+  updateNum("mi", minutes);
+  updateNum("s", seconds);
+}
+
+function updateNum(id, value) {
+  const el = document.getElementById(id);
+  if (el.textContent !== String(value)) {
+    el.textContent = value;
+    // 重新触发动画
+    el.classList.remove("flip");
+    void el.offsetWidth;  // 强制重排，让动画能重新播放
+    el.classList.add("flip");
   }
 }
 
-/* ========== 顶部标题 ========== */
-header {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 100px 20px 40px;
-}
-header h1 {
-  font-family: "Kaiti SC", "KaiTi", "STKaiti", serif;
-  font-size: 3.2rem;
-  color: #d98c8c;
-  letter-spacing: 4px;
-  margin-bottom: 16px;
-}
-header p {
-  color: #999;
-  font-size: 1rem;
-}
+updateCounter();
+setInterval(updateCounter, 1000);
 
-/* ========== 计数器 ========== */
-.counter {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  margin: 20px auto 60px;
-  padding: 30px 20px;
-  max-width: 600px;
-}
-.counter .label {
-  font-size: 0.9rem;
-  color: #b08a8a;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-}
-.counter .number {
-  font-size: 4rem;
-  font-weight: bold;
-  color: #d98c8c;
-  line-height: 1;
-  text-shadow: 0 4px 20px rgba(217, 140, 140, 0.25);
-}
-.counter .unit {
-  font-size: 1.2rem;
-  color: #b08a8a;
-  margin-left: 8px;
-}
-.counter .detail {
-  margin-top: 18px;
-  font-size: 1.05rem;
-  color: #a87c7c;
-  letter-spacing: 1px;
-  font-weight: 500;
-}
+/* ========== 2. 樱花花瓣 ========== */
+const sakuraContainer = document.getElementById("sakura");
+const PETAL_COUNT = 25;
+const PETAL_INTERVAL = 800;
 
-.counter .detail .num {
-  display: inline-block;
-  min-width: 1.6em;
-  text-align: center;
-  color: #d98c8c;
-  font-weight: bold;
-  transition: transform 0.2s ease;
-}
+function createPetal(instant) {
+  const petal = document.createElement("div");
+  petal.className = "petal";
 
-.counter .detail .num.flip {
-  animation: flipNum 0.4s ease;
-}
+  const size = Math.random() * 12 + 8;
+  petal.style.width = size + "px";
+  petal.style.height = size + "px";
 
-@keyframes flipNum {
-  0%   { transform: translateY(-6px) scale(1.15); opacity: 0.4; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
-}
+  petal.style.left = Math.random() * 100 + "vw";
 
-.counter .since {
-  margin-top: 14px;
-  font-size: 0.85rem;
-  color: #bbb;
-}
+  const duration = Math.random() * 8 + 8;
+  petal.style.animationDuration = duration + "s";
 
-/* ========== 时间线 ========== */
-.timeline {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px 120px;
-}
-.timeline::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: #e8c4c4;
-  transform: translateX(-50%);
-}
-.event {
-  position: relative;
-  width: 50%;
-  padding: 20px 40px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease;
-}
-.event.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.event.left { left: 0; text-align: right; }
-.event.right { left: 50%; text-align: left; }
-.event::after {
-  content: "";
-  position: absolute;
-  top: 30px;
-  width: 14px;
-  height: 14px;
-  background: #d98c8c;
-  border: 3px solid #fdf6f0;
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px #e8c4c4;
-}
-.event.left::after { right: -8px; }
-.event.right::after { left: -8px; }
-
-.event .date {
-  font-size: 0.9rem;
-  color: #d98c8c;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-.event .card {
-  background: #fff;
-  padding: 20px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(217, 140, 140, 0.12);
-  display: inline-block;
-  text-align: left;
-  max-width: 100%;
-}
-.event .card h3 {
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 8px;
-}
-.event .card p {
-  font-size: 0.95rem;
-  color: #777;
-}
-.event .card img {
-  width: 100%;
-  border-radius: 8px;
-  margin-top: 12px;
-  display: block;
-}
-
-.ending {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 80px 20px 120px;
-  color: #d98c8c;
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-}
-
-/* style.css 加 */
-.event .card img { cursor: pointer; }
-
-.lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 999;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-.lightbox.show { display: flex; }
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
-
-.event .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.event .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(217, 140, 140, 0.25);
-}
-
-/* ========== 手机适配 ========== */
-@media (max-width: 700px) {
-  /* 竖线靠左 */
-  .timeline::before {
-    left: 20px;
+  if (instant) {
+    petal.style.animationDelay = (-Math.random() * duration) + "s";
+  } else {
+    petal.style.animationDelay = Math.random() * 2 + "s";
   }
 
-  /* 所有事件都靠左排列，覆盖 .left 和 .right 的默认设置 */
-  .event,
-  .event.left,
-  .event.right {
-    width: 100%;
-    left: 0 !important;
-    text-align: left !important;   /* 强制靠左 */
-    padding-left: 60px;
-    padding-right: 10px;
-  }
+  petal.style.opacity = Math.random() * 0.5 + 0.4;
 
-  /* 圆点对齐竖线：left 20px + 自身宽度一半回退 */
-  .event::after,
-  .event.left::after,
-  .event.right::after {
-    left: 20px !important;
-    right: auto !important;
-    transform: translateX(-50%);
-  }
+  // 关键：动画结束后自动删除这个 div，避免累积
+  petal.addEventListener("animationend", () => {
+    petal.remove();
+  });
 
-  /* 卡片也靠左 */
-  .event .card {
-    text-align: left;
-  }
-
-  /* 数字和详情字号缩小 */
-  .counter .number { font-size: 3rem; }
-  .counter .detail { font-size: 0.9rem; }
+  sakuraContainer.appendChild(petal);
 }
+
+for (let i = 0; i < PETAL_COUNT; i++) {
+  createPetal(true);
+}
+
+setInterval(() => createPetal(false), PETAL_INTERVAL);
+
+/* ========== 3. 滚动淡入 ========== */
+const events = document.querySelectorAll(".event");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+}, { threshold: 0.15 });
+events.forEach(event => observer.observe(event));
+
+// script.js 加
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+
+document.querySelectorAll(".event .card img").forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add("show");
+  });
+});
+
+lightbox.addEventListener("click", () => {
+  lightbox.classList.remove("show");
+});
