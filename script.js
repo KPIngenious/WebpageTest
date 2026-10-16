@@ -266,35 +266,27 @@ function updateMilestone() {
 
   milestoneDaysEl.textContent = days > TOTAL_DAYS ? TOTAL_DAYS : days;
 
-  // 进度条从 0 跑到 percent
   requestAnimationFrame(() => {
     milestoneFill.style.width = percent + "%";
     milestoneMarker.style.left = percent + "%";
   });
 
-  // 节点：跟着进度条同步渐变
   const labelEls = milestoneLabels.querySelectorAll(".milestone-label");
   const startTime = performance.now();
   const DURATION = 2500;
 
   function step(now) {
     const progress = Math.min((now - startTime) / DURATION, 1);
-    const currentDay = days * progress;   // 当前进度对应的天数
+    const currentDay = days * progress;
 
     nodes.forEach((node, i) => {
       const nodeDay = parseInt(node.dataset.day);
 
       if (nodeDay <= currentDay) {
-        // 已经过了：亮
         if (!node.classList.contains("passed")) {
           node.classList.add("passed");
           if (labelEls[i]) labelEls[i].classList.add("passed");
         }
-      } else if (nodeDay <= days) {
-        // 还没到，但在终点范围内：按距离渐变
-        const distance = (nodeDay - currentDay) / days;
-        const opacity = Math.max(0, 1 - distance * 10);
-        node.style.opacity = opacity;
       }
     });
 
