@@ -247,11 +247,6 @@ header p {
     transform: none;      /* 取消偏移 */
   }
 
-  .timeline::before {
-  background: red !important;
-  width: 4px !important;
-}
-
   .event,
   .event.left,
   .event.right {
