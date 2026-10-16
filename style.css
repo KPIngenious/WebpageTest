@@ -233,7 +233,7 @@ body.theme-fun .counter .number {
   background: var(--main);
   border-radius: 2px;
   transform: translateY(-50%);
-  transition: width 2.5s ease-out;
+  transition: width 3.5s ease-out;
   box-shadow: 0 0 12px var(--main);
 }
 
@@ -272,7 +272,7 @@ body.theme-fun .counter .number {
   left: 0%;
   font-size: 22px;
   transform: translate(-50%, -50%);
-  transition: left 2.5s ease-out;
+  transition: left 3.5s ease-out;
   z-index: 3;
   filter: drop-shadow(0 0 6px var(--main));
 }
