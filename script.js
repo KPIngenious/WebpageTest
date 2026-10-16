@@ -15,13 +15,11 @@ function updateNum(id, value) {
 function updateCounter() {
   const now = new Date();
 
-  // ---- 总天数 ----
   const diffMs = now - startDate;
   const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   const daysEl = document.getElementById("days");
   if (daysEl) daysEl.textContent = totalDays.toLocaleString();
 
-  // ---- 年月日时分秒 ----
   let years = now.getFullYear() - startDate.getFullYear();
   let months = now.getMonth() - startDate.getMonth();
   let days = now.getDate() - startDate.getDate();
@@ -47,28 +45,96 @@ function updateCounter() {
   updateNum("s", seconds);
 }
 
-updateCounter();
-setInterval(updateCounter, 1000);
+// 打开页面时，天数从 0 滚到真实值
+function animateNumber(el, target, duration = 1200) {
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const value = Math.floor(target * progress);
+    el.textContent = value.toLocaleString();
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// 先算出真实天数
+const now = new Date();
+const realDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+
+// 从 0 开始滚
+const daysEl = document.getElementById("days");
+daysEl.textContent = "0";
+setTimeout(() => {
+  animateNumber(daysEl, realDays, 2200);   // 2.5 秒滚完
+}, 300);
+
+// 之后每秒更新（但不再滚动，直接显示真实值）
+setTimeout(() => {
+  updateCounter();
+  setInterval(updateCounter, 1000);
+}, 2500);
 
 
-/* ========== 2. 樱花花瓣 ========== */
+/* ========== 2. 默认主题（永远浪漫） ========== */
+const themeBtn = document.getElementById("theme-btn");
+//themeBtn.textContent = "🌸";
+//页面默认浪漫。想默认万兽之王，改成：
+document.body.classList.add("theme-fun");
+themeBtn.textContent = "👑";
+
+
+/* ========== 3. 掉落物 ========== */
 const sakuraContainer = document.getElementById("sakura");
 const PETAL_COUNT = 25;
 const PETAL_INTERVAL = 1500;
-const MAX_PETALS = 25;   // 同时存在的花瓣上限
+const MAX_PETALS = 25;
+
+/* 万兽之王主题的掉落物 emoji */
+const FUN_ICONS = ["🐺", "🦁", "🐯", "👑", "⚔️"];
+
+/* 如果你有 PNG 图片，用这个替换上面那行：
+const FUN_ICONS = [
+  "images/wolf.png",
+  "images/lion.png",
+  "images/crown.png"
+];
+*/
+
+const USE_IMAGE = false;   // 用 emoji 就保持 false；用 PNG 就改成 true
 
 function createPetal(instant) {
-  // 达到上限就不生成新的
-  if (sakuraContainer.children.length >= MAX_PETALS) {
-    return;
-  }
+  if (sakuraContainer.children.length >= MAX_PETALS) return;
+
+  const isFun = document.body.classList.contains("theme-fun");
 
   const petal = document.createElement("div");
   petal.className = "petal";
 
   const size = Math.random() * 12 + 8;
-  petal.style.width = size + "px";
-  petal.style.height = size + "px";
+
+  if (isFun) {
+    petal.classList.add("img-petal");
+    const pick = FUN_ICONS[Math.floor(Math.random() * FUN_ICONS.length)];
+
+    if (USE_IMAGE) {
+      // 用 PNG 图片
+      petal.style.width = (size + 12) + "px";
+      petal.style.height = (size + 12) + "px";
+      petal.style.backgroundImage = `url(${pick})`;
+    } else {
+      // 用 emoji
+      petal.style.width = (size + 14) + "px";
+      petal.style.height = (size + 14) + "px";
+      petal.style.fontSize = (size + 8) + "px";
+      petal.textContent = pick;
+    }
+  } else {
+    // 浪漫模式：CSS 花瓣
+    petal.style.width = size + "px";
+    petal.style.height = size + "px";
+  }
+
   petal.style.left = Math.random() * 100 + "vw";
 
   const duration = Math.random() * 8 + 8;
@@ -82,7 +148,6 @@ function createPetal(instant) {
 
   petal.style.opacity = Math.random() * 0.5 + 0.4;
 
-  // 动画结束自动删除
   petal.addEventListener("animationend", () => {
     petal.remove();
   });
@@ -90,14 +155,18 @@ function createPetal(instant) {
   sakuraContainer.appendChild(petal);
 }
 
-for (let i = 0; i < PETAL_COUNT; i++) {
-  createPetal(true);
+function fillPetals() {
+  sakuraContainer.innerHTML = "";
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    createPetal(true);
+  }
 }
 
+fillPetals();
 setInterval(() => createPetal(false), PETAL_INTERVAL);
 
 
-/* ========== 3. 滚动淡入 + 淡出 ========== */
+/* ========== 4. 滚动淡入 + 淡出 ========== */
 const events = document.querySelectorAll(".event");
 
 const observer = new IntersectionObserver((entries) => {
@@ -123,7 +192,7 @@ const observer = new IntersectionObserver((entries) => {
 events.forEach(event => observer.observe(event));
 
 
-/* ========== 4. 图片点击放大 ========== */
+/* ========== 5. 图片点击放大 ========== */
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 
@@ -136,4 +205,96 @@ document.querySelectorAll(".event .card img").forEach(img => {
 
 lightbox.addEventListener("click", () => {
   lightbox.classList.remove("show");
+});
+
+
+/* ========== 6. 主题切换 ========== */
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("theme-fun");
+  const isFun = document.body.classList.contains("theme-fun");
+  themeBtn.textContent = isFun ? "👑" : "🌸";
+  fillPetals();
+});
+
+/* ========== 7. 里程碑进度条 ========== */
+const TOTAL_DAYS = 3650;   // 10 年
+const milestoneFill = document.getElementById("milestone-fill");
+const milestoneMarker = document.getElementById("milestone-marker");
+const milestoneLabels = document.getElementById("milestone-labels");
+const milestoneDaysEl = document.getElementById("milestone-days");
+const milestoneBar = document.querySelector(".milestone-bar");
+
+// 生成 11 个节点：0, 365, 730, ... 3650
+const NODE_COUNT = 11;
+const nodes = [];
+
+for (let i = 0; i < NODE_COUNT; i++) {
+  const day = Math.round((TOTAL_DAYS / (NODE_COUNT - 1)) * i);
+  const percent = (day / TOTAL_DAYS) * 100;
+
+  // 节点
+  const node = document.createElement("div");
+  node.className = "milestone-node";
+  node.style.left = percent + "%";
+  node.dataset.day = day;
+  milestoneBar.appendChild(node);
+  nodes.push(node);
+
+  // 标签
+  const label = document.createElement("div");
+  label.className = "milestone-label";
+  label.style.left = percent + "%";
+  label.dataset.day = day;
+  if (i === 0) {
+    label.textContent = "0";
+  } else {
+    label.textContent = (day / 365).toFixed(0) + "年";
+  }
+  milestoneLabels.appendChild(label);
+}
+
+// 计算当前天数
+function getCurrentDays() {
+  const now = new Date();
+  const diff = now - startDate;
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+// 更新进度条
+function updateMilestone() {
+  const days = getCurrentDays();
+  const percent = Math.min((days / TOTAL_DAYS) * 100, 100);
+
+  // 文字
+  milestoneDaysEl.textContent = days > TOTAL_DAYS ? TOTAL_DAYS : days;
+
+  // 进度条从 0 推进到 percent
+  requestAnimationFrame(() => {
+    milestoneFill.style.width = percent + "%";
+    milestoneMarker.style.left = percent + "%";
+  });
+
+  // 节点和标签逐个亮起
+  const labelEls = milestoneLabels.querySelectorAll(".milestone-label");
+  nodes.forEach((node, i) => {
+    const nodeDay = parseInt(node.dataset.day);
+    if (nodeDay <= days) {
+      // 延迟一点再亮，让动画有层次
+      setTimeout(() => {
+        node.classList.add("passed");
+        node.classList.add("pop");
+        setTimeout(() => node.classList.remove("pop"), 600);
+        if (labelEls[i]) labelEls[i].classList.add("passed");
+      }, 2500 * (nodeDay / TOTAL_DAYS) + 200);   // 和进度条同步
+    }
+  });
+}
+
+// 页面加载时启动
+window.addEventListener("load", () => {
+  // 先让进度条从 0 开始
+  milestoneFill.style.width = "0%";
+  milestoneMarker.style.left = "0%";
+  // 稍等一下再推进
+  setTimeout(updateMilestone, 300);
 });
