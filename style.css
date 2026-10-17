@@ -314,6 +314,10 @@ body.theme-fun .counter .number {
     font-size: 0.95rem;
     letter-spacing: 2px;
   }
+  /* 手机端缩小奔跑的小人 */
+  .milestone-marker img {
+    width: 45px;  /* 电脑上是 48px，手机变小 */
+  }
 }
 
 
@@ -381,16 +385,39 @@ body.theme-fun .countdown-card {
 
 /* 手机适配 */
 @media (max-width: 700px) {
+  
+  /* ========== 手机端倒计时特殊排版 ========== */
   .countdown-section {
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 分成左右两列 */
+    gap: 12px;
+    padding: 0 15px;
+    margin-bottom: 40px;
   }
+
+  /* 第一个卡片（周年）跨满两列，独占一行 */
+  .countdown-card:first-child {
+    grid-column: 1 / -1;
+  }
+
   .countdown-card {
-    min-width: 140px;
-    padding: 10px 15px;
+    min-width: 0; /* 解除宽度限制，让网格自己算 */
+    padding: 12px 10px;
+    max-width: none;
   }
+
+  .countdown-title {
+    font-size: 0.8rem;
+  }
+
   .countdown-value span {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
+  
+  .countdown-date {
+    font-size: 0.7rem;
+  }
+  
 }
 
 
