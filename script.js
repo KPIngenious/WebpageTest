@@ -220,7 +220,6 @@ const TOTAL_DAYS = 3650;   // 10 年
 const milestoneFill = document.getElementById("milestone-fill");
 const milestoneMarker = document.getElementById("milestone-marker");
 const milestoneLabels = document.getElementById("milestone-labels");
-const milestoneDaysEl = document.getElementById("milestone-days");
 const milestoneBar = document.querySelector(".milestone-bar");
 
 // 生成 11 个节点：0, 365, 730, ... 3650
@@ -264,8 +263,6 @@ function updateMilestone() {
   const days = getCurrentDays();
   const percent = Math.min((days / TOTAL_DAYS) * 100, 100);
 
-  milestoneDaysEl.textContent = days > TOTAL_DAYS ? TOTAL_DAYS : days;
-
   requestAnimationFrame(() => {
     milestoneFill.style.width = percent + "%";
     milestoneMarker.style.left = percent + "%";
@@ -303,3 +300,83 @@ window.addEventListener("load", () => {
   // 稍等一下再推进
   setTimeout(updateMilestone, 300);
 });
+
+/* ========== 倒计时逻辑 ========== */
+const START_YEAR = 2023;       // 在一起的那一年
+const HER_BIRTH_YEAR = 2005;   // Ms Cindy 出生年
+const HIS_BIRTH_YEAR = 2001;   // Mr Tang 出生年
+
+const HER_BIRTHDAY = { month: 5, day: 3 };   
+const HIS_BIRTHDAY = { month: 0, day: 26 };  
+const ANNIVERSARY = { month: 0, day: 5 };    
+
+function getDaysUntil(targetMonth, targetDay) {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+
+  let target = new Date(now.getFullYear(), targetMonth, targetDay);
+
+  if (target < now) {
+    target = new Date(now.getFullYear() + 1, targetMonth, targetDay);
+  }
+
+  const diffTime = target - now;
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+function updateCountdowns() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+
+  const cdAnniversary = document.getElementById("cd-anniversary");
+  const cdHer = document.getElementById("cd-her");
+  const cdHim = document.getElementById("cd-him");
+  
+  const titleAnniversary = document.getElementById("title-anniversary");
+  const titleHer = document.getElementById("title-her");
+  const titleHim = document.getElementById("title-him");
+
+  // 1. 算天数
+  if (cdAnniversary) cdAnniversary.textContent = getDaysUntil(ANNIVERSARY.month, ANNIVERSARY.day);
+  if (cdHer) cdHer.textContent = getDaysUntil(HER_BIRTHDAY.month, HER_BIRTHDAY.day);
+  if (cdHim) cdHim.textContent = getDaysUntil(HIS_BIRTHDAY.month, HIS_BIRTHDAY.day);
+
+  // 2. 算“接下来的”周年数和岁数
+  
+  // --- 周年纪念 ---
+  // 如果今年的纪念日还没过，就是今年的；如果过了，就是明年的
+  let nextAnnYear = currentYear;
+  let annDateThisYear = new Date(currentYear, ANNIVERSARY.month, ANNIVERSARY.day);
+  if (now > annDateThisYear) {
+    nextAnnYear = currentYear + 1;
+  }
+  const anniversaryCount = nextAnnYear - START_YEAR;
+  if (titleAnniversary) {
+    titleAnniversary.textContent = anniversaryCount === 1 ? "距离 1 周年纪念" : `距离 ${anniversaryCount} 周年纪念`;
+  }
+
+  // --- Ms Cindy 生日 ---
+  let nextHerYear = currentYear;
+  let herDateThisYear = new Date(currentYear, HER_BIRTHDAY.month, HER_BIRTHDAY.day);
+  if (now > herDateThisYear) {
+    nextHerYear = currentYear + 1;
+  }
+  const herAge = nextHerYear - HER_BIRTH_YEAR;
+  if (titleHer) {
+    titleHer.textContent = `距离Cindy ${herAge}岁生日`;
+  }
+
+  // --- Mr Tang 生日 ---
+  let nextHimYear = currentYear;
+  let himDateThisYear = new Date(currentYear, HIS_BIRTHDAY.month, HIS_BIRTHDAY.day);
+  if (now > himDateThisYear) {
+    nextHimYear = currentYear + 1;
+  }
+  const hisAge = nextHimYear - HIS_BIRTH_YEAR;
+  if (titleHim) {
+    titleHim.textContent = `距离Tang ${hisAge}岁生日`;
+  }
+}
+
+updateCountdowns();
+setInterval(updateCountdowns, 1000 * 60 * 60);  // 每小时刷新一次
