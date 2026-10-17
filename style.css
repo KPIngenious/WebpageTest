@@ -614,4 +614,12 @@ body.theme-fun .event .card:hover {
   }
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
+
+  /* 手机端的图片结点大小 */
+  body.theme-fun .event::after,
+  body.theme-fun .event.left::after,
+  body.theme-fun .event.right::after {
+    width: 16px;
+    height: 16px;
+  }
 }
