@@ -921,12 +921,68 @@ body.theme-fun .flip-digit {
   font-weight: bold;
 }
 
-/* 响应式 */
+/* ================= 响应式 ================= */
 @media (orientation: portrait) and (max-width: 700px) {
+  /* 手机竖屏时显示提示，隐藏时钟 */
   .rotate-hint { display: flex; }
   .clock-container { display: none; }
 }
+
 @media (orientation: landscape), (min-width: 701px) {
+  /* 横屏或电脑时显示时钟，隐藏提示 */
   .rotate-hint { display: none; }
-  .clock-container { display: flex; }
+  .clock-container { 
+    display: flex; 
+    /* 关键点1：使用动态视口高度，完美适配手机横屏时的真实高度 */
+    height: 100dvh; 
+    height: 100vh; /* 老设备兜底 */
+    overflow: hidden; /* 防止内容意外溢出 */
+  }
+}
+
+/* ================= 手机横屏专属微调 ================= */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* 关键点2：手机横屏时，压缩容器内边距 */
+  .clock-container {
+    padding: 1.5vh 2vw;
+  }
+
+  /* 压缩顶部区域，让出空间给底部 */
+  .clock-top {
+    margin-bottom: 1vh;
+  }
+
+  /* 缩小中间时钟的数字，防止把盒子撑爆 */
+  .flip-clock {
+    font-size: 6vw; /* 原来是 8vw */
+  }
+  .flip-colon {
+    font-size: 5vw;
+  }
+
+  /* 缩小左右两边文字的尺寸 */
+  .box-days .c-label { font-size: 1rem; margin-bottom: 0.5vh; }
+  .box-days .c-value { font-size: 5vw; }
+  .box-days .c-unit { font-size: 1rem; }
+  
+  .c-cd-item { font-size: 0.9rem; }
+  .c-cd-item span:last-child { font-size: 1.5rem; }
+
+  /* 压缩底部里程碑的高度 */
+  .clock-bottom {
+    padding: 5px 15px;
+    flex-shrink: 0; /* 防止被顶部挤压 */
+  }
+  
+  .clock-m-marker img {
+    width: 30px; /* 缩小奔跑的小人 */
+  }
+  
+  .clock-m-labels {
+    margin-top: 5px;
+    height: 15px;
+  }
+  .clock-m-label {
+    font-size: 0.65rem;
+  }
 }
