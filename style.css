@@ -362,7 +362,7 @@ body.theme-fun .counter .number {
 }
 
 body.theme-fun .countdown-card {
-  border: 1px solid #3a2e24;
+  border: 1px solid #1a1215;
   box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,160,74,0.08);
 }
 
@@ -737,9 +737,9 @@ body.in-clock-mode .photo-nav-btn {
   flex-direction: column;
   gap: 2vh;
 }
-.left-col { flex: 2; }
-.center-col { flex: 5; }
-.right-col { flex: 2; }
+.left-col { flex: 1.5; }
+.center-col { flex: 7; }
+.right-col { flex: 1.5; }
 
 .clock-box {
   background: var(--card-bg);
@@ -858,7 +858,7 @@ body.theme-fun .clock-box {
   display: flex;
   align-items: center;
   gap: 0.5vw;
-  font-size: 8vw; 
+  font-size: 11vw; 
   font-weight: bold;
   color: var(--main);
   font-family: "Courier New", Courier, monospace; 
@@ -1003,7 +1003,7 @@ body.theme-fun .clock-bottom {
   .box-cd .c-cd-title { font-size: 0.85rem; margin-bottom: 0.5vh; }
   .box-cd .c-cd-value span { font-size: 4vw; }
 
-  .flip-clock { font-size: 10vw; }
+  .flip-clock { font-size: 12vw; }
   .flip-colon { font-size: 8vw; }
   .flip-digit { border-radius: 10px; }
 
