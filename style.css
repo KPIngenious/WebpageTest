@@ -100,6 +100,12 @@ body {
   transform: scale(1.1);
 }
 
+
+/* 照片墙导航按钮（叠在主题按钮上面） */
+.photo-nav-btn {
+  bottom: 80px;  /* 主题按钮在 20px，这里往上挪 60px */
+}
+
 /* ========== 顶部标题 ========== */
 header {
   position: relative;
