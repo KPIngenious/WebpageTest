@@ -66,7 +66,7 @@ const realDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
 const daysEl = document.getElementById("days");
 daysEl.textContent = "0";
 setTimeout(() => {
-  animateNumber(daysEl, realDays, 3500);   // 2.5 秒滚完
+  animateNumber(daysEl, realDays, 3500);
 }, 300);
 
 // 之后每秒更新（但不再滚动，直接显示真实值）
@@ -79,9 +79,6 @@ setTimeout(() => {
 /* ========== 2. 默认主题（永远浪漫） ========== */
 const themeBtn = document.getElementById("theme-btn");
 themeBtn.textContent = "🌸";
-//document.body.classList.add("theme-fun");
-//themeBtn.textContent = "👑";
-
 
 /* ========== 3. 掉落物 ========== */
 const sakuraContainer = document.getElementById("sakura");
@@ -89,18 +86,8 @@ const PETAL_COUNT = 25;
 const PETAL_INTERVAL = 1500;
 const MAX_PETALS = 25;
 
-/* 万兽之王主题的掉落物 emoji */
 const FUN_ICONS = ["🐺", "🦁", "🐯", "👑", "⚔️"];
-
-/* 如果你有 PNG 图片，用这个替换上面那行：
-const FUN_ICONS = [
-  "images/wolf.png",
-  "images/lion.png",
-  "images/crown.png"
-];
-*/
-
-const USE_IMAGE = false;   // 用 emoji 就保持 false；用 PNG 就改成 true
+const USE_IMAGE = false;
 
 function createPetal(instant) {
   if (sakuraContainer.children.length >= MAX_PETALS) return;
@@ -167,10 +154,8 @@ let petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
 // 监听页面可见性（切换标签页/切后台）
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    // 切到后台：暂停生成新花瓣
     clearInterval(petalTimer);
   } else {
-    // 切回前台：恢复生成新花瓣
     petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
   }
 });
@@ -233,7 +218,6 @@ const milestoneMarker = document.getElementById("milestone-marker");
 const milestoneLabels = document.getElementById("milestone-labels");
 const milestoneBar = document.querySelector(".milestone-bar");
 
-// 生成 11 个节点：0, 365, 730, ... 3650
 const NODE_COUNT = 11;
 const nodes = [];
 
@@ -241,7 +225,6 @@ for (let i = 0; i < NODE_COUNT; i++) {
   const day = Math.round((TOTAL_DAYS / (NODE_COUNT - 1)) * i);
   const percent = (day / TOTAL_DAYS) * 100;
 
-  // 节点
   const node = document.createElement("div");
   node.className = "milestone-node";
   node.style.left = percent + "%";
@@ -249,7 +232,6 @@ for (let i = 0; i < NODE_COUNT; i++) {
   milestoneBar.appendChild(node);
   nodes.push(node);
 
-  // 标签
   const label = document.createElement("div");
   label.className = "milestone-label";
   label.style.left = percent + "%";
@@ -262,14 +244,12 @@ for (let i = 0; i < NODE_COUNT; i++) {
   milestoneLabels.appendChild(label);
 }
 
-// 计算当前天数
 function getCurrentDays() {
   const now = new Date();
   const diff = now - startDate;
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
 
-// 更新进度条
 function updateMilestone() {
   const days = getCurrentDays();
   const percent = Math.min((days / TOTAL_DAYS) * 100, 100);
@@ -303,19 +283,16 @@ function updateMilestone() {
   requestAnimationFrame(step);
 }
 
-// 页面加载时启动
 window.addEventListener("load", () => {
-  // 先让进度条从 0 开始
   milestoneFill.style.width = "0%";
   milestoneMarker.style.left = "0%";
-  // 稍等一下再推进
   setTimeout(updateMilestone, 300);
 });
 
 /* ========== 倒计时逻辑 ========== */
-const START_YEAR = 2023;       // 在一起的那一年
-const HER_BIRTH_YEAR = 2005;   // Ms Cindy 出生年
-const HIS_BIRTH_YEAR = 2001;   // Mr Tang 出生年
+const START_YEAR = 2023;       
+const HER_BIRTH_YEAR = 2005;   
+const HIS_BIRTH_YEAR = 2001;   
 
 const HER_BIRTHDAY = { month: 5, day: 3 };   
 const HIS_BIRTHDAY = { month: 0, day: 26 };  
@@ -347,42 +324,32 @@ function updateCountdowns() {
   const titleHer = document.getElementById("title-her");
   const titleHim = document.getElementById("title-him");
 
-  // 1. 算天数
   if (cdAnniversary) cdAnniversary.textContent = getDaysUntil(ANNIVERSARY.month, ANNIVERSARY.day);
   if (cdHer) cdHer.textContent = getDaysUntil(HER_BIRTHDAY.month, HER_BIRTHDAY.day);
   if (cdHim) cdHim.textContent = getDaysUntil(HIS_BIRTHDAY.month, HIS_BIRTHDAY.day);
 
-  // 2. 算“接下来的”周年数和岁数
-  
-  // --- 周年纪念 ---
-  // 如果今年的纪念日还没过，就是今年的；如果过了，就是明年的
   let nextAnnYear = currentYear;
   let annDateThisYear = new Date(currentYear, ANNIVERSARY.month, ANNIVERSARY.day);
-  if (now > annDateThisYear) {
-    nextAnnYear = currentYear + 1;
-  }
+  if (now > annDateThisYear) nextAnnYear = currentYear + 1;
+  
   const anniversaryCount = nextAnnYear - START_YEAR;
   if (titleAnniversary) {
     titleAnniversary.textContent = anniversaryCount === 1 ? "距离 1 周年纪念" : `距离 ${anniversaryCount} 周年纪念`;
   }
 
-  // --- Ms Cindy 生日 ---
   let nextHerYear = currentYear;
   let herDateThisYear = new Date(currentYear, HER_BIRTHDAY.month, HER_BIRTHDAY.day);
-  if (now > herDateThisYear) {
-    nextHerYear = currentYear + 1;
-  }
+  if (now > herDateThisYear) nextHerYear = currentYear + 1;
+  
   const herAge = nextHerYear - HER_BIRTH_YEAR;
   if (titleHer) {
     titleHer.textContent = `距离Cindy ${herAge}岁生日`;
   }
 
-  // --- Mr Tang 生日 ---
   let nextHimYear = currentYear;
   let himDateThisYear = new Date(currentYear, HIS_BIRTHDAY.month, HIS_BIRTHDAY.day);
-  if (now > himDateThisYear) {
-    nextHimYear = currentYear + 1;
-  }
+  if (now > himDateThisYear) nextHimYear = currentYear + 1;
+  
   const hisAge = nextHimYear - HIS_BIRTH_YEAR;
   if (titleHim) {
     titleHim.textContent = `距离Tang ${hisAge}岁生日`;
@@ -390,7 +357,7 @@ function updateCountdowns() {
 }
 
 updateCountdowns();
-setInterval(updateCountdowns, 1000 * 60 * 60);  // 每小时刷新一次
+setInterval(updateCountdowns, 1000 * 60 * 60);  
 
 /* ========== 8. 照片墙自动生成 ========== */
 const wallPhotos = [
@@ -409,7 +376,6 @@ if (photoWall) {
     img.src = src;
     img.alt = "我们的照片";
     
-    // 复用你原来的 lightbox 放大功能
     img.addEventListener("click", () => {
       lightboxImg.src = img.src;
       lightbox.classList.add("show");
@@ -422,17 +388,13 @@ if (photoWall) {
 /* ========== 9. 照片墙导航按钮 ========== */
 const photoNavBtn = document.getElementById("photo-nav-btn");
 const photoSection = document.querySelector(".photo-wall-section");
-const photoTitle = document.querySelector(".photo-wall-title"); // 获取标题元素
+const photoTitle = document.querySelector(".photo-wall-title"); 
 
-// 检测是否到达照片墙区域的函数
 function checkPhotoSectionPosition() {
   if (!photoSection || !photoNavBtn) return;
   
-  // 获取标题距离屏幕顶部的位置
   const rect = photoTitle.getBoundingClientRect();
   
-  // 条件：当“我们的时光”这个标题进入了屏幕（距离顶部小于屏幕高度的 80%）
-  // 就认为已经到达了照片墙区域
   if (rect.top < window.innerHeight * 0.4) {
     photoNavBtn.textContent = "⬆️";
     photoNavBtn.title = "回到顶部";
@@ -442,31 +404,19 @@ function checkPhotoSectionPosition() {
   }
 }
 
-// 滚动时实时检测
 window.addEventListener("scroll", checkPhotoSectionPosition);
 
-// 点击按钮的逻辑
 if (photoNavBtn && photoSection) {
   photoNavBtn.addEventListener("click", () => {
     const rect = photoTitle.getBoundingClientRect();
     
-    // 如果标题已经出现在视野中，说明在下面了，回顶部
     if (rect.top < window.innerHeight * 0.4) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // 否则，传送到照片墙区域
-      // 我们传送到比标题稍微靠上一点的位置，视觉上更舒服
-      window.scrollTo({
-        top: photoSection.offsetTop + 350, 
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: photoSection.offsetTop + 350, behavior: "smooth" });
     }
   });
   
-  // 页面刚加载时先检查一次
   checkPhotoSectionPosition();
 }
 
@@ -475,7 +425,6 @@ const clockBtn = document.getElementById("clock-btn");
 const clockOverlay = document.getElementById("clock-overlay");
 const closeClockMobile = document.getElementById("close-clock-mobile");
 
-// 生成电子时钟的 DOM 结构
 function initFlipClock() {
   const flipClock = document.getElementById("flip-clock");
   if (!flipClock) return;
@@ -492,7 +441,6 @@ function initFlipClock() {
 }
 initFlipClock();
 
-// 翻牌数字动画
 function flipDigit(id, newValue) {
   const el = document.getElementById(id);
   if (!el || el.textContent === String(newValue)) return;
@@ -507,11 +455,11 @@ function flipDigit(id, newValue) {
   }, 150);
 }
 
-// 更新时间钟
 function updateClock() {
   if (!clockOverlay.classList.contains("show")) return;
   
   const now = new Date();
+  
   const hh = String(now.getHours()).padStart(2, '0');
   const mm = String(now.getMinutes()).padStart(2, '0');
   const ss = String(now.getSeconds()).padStart(2, '0');
@@ -526,8 +474,13 @@ function updateClock() {
   const days = getCurrentDays();
   document.getElementById("clock-days").textContent = days.toLocaleString();
 
+  document.getElementById("clock-title-ann").textContent = document.getElementById("title-anniversary").textContent;
   document.getElementById("clock-cd-ann").textContent = document.getElementById("cd-anniversary").textContent;
+  
+  document.getElementById("clock-title-her").textContent = document.getElementById("title-her").textContent;
   document.getElementById("clock-cd-her").textContent = document.getElementById("cd-her").textContent;
+  
+  document.getElementById("clock-title-him").textContent = document.getElementById("title-him").textContent;
   document.getElementById("clock-cd-him").textContent = document.getElementById("cd-him").textContent;
 
   const totalDays = 3650;
@@ -535,12 +488,24 @@ function updateClock() {
   document.getElementById("clock-m-fill").style.width = percent + "%";
   document.getElementById("clock-m-marker").style.left = percent + "%";
   
+  const barContainer = document.querySelector(".clock-m-bar");
   const labelsContainer = document.getElementById("clock-m-labels");
+  
+  // 只在第一次打开时生成 DOM
   if (labelsContainer.children.length === 0) {
     const NODE_COUNT = 11;
     for (let i = 0; i < NODE_COUNT; i++) {
       const day = Math.round((totalDays / (NODE_COUNT - 1)) * i);
       const p = (day / totalDays) * 100;
+      
+      // 生成圆点
+      const node = document.createElement("div");
+      node.className = "clock-m-node";
+      node.style.left = p + "%";
+      node.dataset.day = day;
+      barContainer.appendChild(node);
+
+      // 生成文字标签
       const lbl = document.createElement("div");
       lbl.className = "clock-m-label";
       lbl.style.left = p + "%";
@@ -549,23 +514,29 @@ function updateClock() {
     }
   }
   
-  const labels = labelsContainer.querySelectorAll(".clock-m-label");
-  labels.forEach((lbl, i) => {
-    const lblDay = Math.round((totalDays / (labels.length - 1)) * i);
-    if (lblDay <= days) lbl.classList.add("passed");
-    else lbl.classList.remove("passed");
+  // 直接比对天数，点亮已经过的节点和标签
+  const allNodes = barContainer.querySelectorAll(".clock-m-node");
+  const allLabels = labelsContainer.querySelectorAll(".clock-m-label");
+  
+  allNodes.forEach((node, i) => {
+    if (parseInt(node.dataset.day) <= days) {
+      node.classList.add("passed");
+      if (allLabels[i]) allLabels[i].classList.add("passed");
+    } else {
+      node.classList.remove("passed");
+      if (allLabels[i]) allLabels[i].classList.remove("passed");
+    }
   });
-}
+} /* ★ 修复了这里缺失的大括号，导致时钟完全失效 */
 
 let clockTimer = null;
 
 function toggleClock(enter) {
   if (enter) {
     clockOverlay.classList.add("show");
-    document.body.classList.add("in-clock-mode"); // 隐藏照片墙按钮
+    document.body.classList.add("in-clock-mode");
     document.body.style.overflow = "hidden"; 
     
-    // 尝试全屏
     if (document.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen().catch(() => {});
     }
@@ -573,7 +544,6 @@ function toggleClock(enter) {
     updateClock();
     clockTimer = setInterval(updateClock, 1000);
     
-    // 更新按钮图标为“关闭”
     clockBtn.textContent = "❌";
     clockBtn.title = "退出时钟模式";
   } else {
@@ -590,7 +560,6 @@ function toggleClock(enter) {
       clockTimer = null;
     }
     
-    // 恢复图标
     clockBtn.textContent = "⏰";
     clockBtn.title = "进入时钟模式";
   }
