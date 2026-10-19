@@ -840,22 +840,32 @@ body.theme-fun .clock-box {
   color: var(--main);
 }
 
+/* 中间时钟数字 */
 .flip-clock {
   display: flex;
+  align-items: center; /* 确保冒号和数字垂直居中 */
   gap: 0.5vw;
-  font-size: 8vw;
+  font-size: 8vw; 
   font-weight: bold;
   color: var(--main);
+  /* ★ 关键：强制使用等宽字体，让 1 和 8 占据一样的宽度 */
+  font-family: "Courier New", Courier, monospace; 
 }
+
 .flip-digit {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center; /* 数字在卡片内居中 */
+  align-items: center;
   background: var(--bg-bottom);
   border-radius: 16px;
-  padding: 0 1.5vw;
+  padding: 0; 
+  /* ★ 关键：给卡片一个固定的宽度，大约是字体的 0.65 倍 */
+  width: 0.65em; 
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
+
 body.theme-fun .flip-digit {
   background: #0a0a0f;
 }
