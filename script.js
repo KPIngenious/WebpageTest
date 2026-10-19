@@ -424,6 +424,26 @@ if (photoNavBtn && photoSection) {
 const clockBtn = document.getElementById("clock-btn");
 const clockOverlay = document.getElementById("clock-overlay");
 const closeClockMobile = document.getElementById("close-clock-mobile");
+const toggleBtn = document.getElementById("clock-toggle-btn");
+const ampmDisplay = document.getElementById("clock-ampm");
+
+let is12HourFormat = false;
+
+// 初始化时，读取本地存储的记忆
+if (localStorage.getItem("clockFormat") === "12") {
+  is12HourFormat = true;
+  if(toggleBtn) toggleBtn.textContent = "12小时制";
+}
+
+// 点击切换按钮
+if (toggleBtn) {
+  toggleBtn.addEventListener("click", () => {
+    is12HourFormat = !is12HourFormat;
+    toggleBtn.textContent = is12HourFormat ? "12小时制" : "24小时制";
+    localStorage.setItem("clockFormat", is12HourFormat ? "12" : "24");
+    updateClock(); // 立即刷新
+  });
+}
 
 function initFlipClock() {
   const flipClock = document.getElementById("flip-clock");
@@ -460,7 +480,25 @@ function updateClock() {
   
   const now = new Date();
   
-  const hh = String(now.getHours()).padStart(2, '0');
+  let hours = now.getHours();
+  let ampm = "";
+  
+  if (is12HourFormat) {
+    ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    if(ampmDisplay) {
+      ampmDisplay.textContent = ampm;
+      ampmDisplay.style.opacity = "1";
+    }
+  } else {
+    if(ampmDisplay) {
+      ampmDisplay.textContent = "";
+      ampmDisplay.style.opacity = "0";
+    }
+  }
+  
+  const hh = String(hours).padStart(2, '0');
   const mm = String(now.getMinutes()).padStart(2, '0');
   const ss = String(now.getSeconds()).padStart(2, '0');
   
@@ -491,21 +529,18 @@ function updateClock() {
   const barContainer = document.querySelector(".clock-m-bar");
   const labelsContainer = document.getElementById("clock-m-labels");
   
-  // 只在第一次打开时生成 DOM
   if (labelsContainer.children.length === 0) {
     const NODE_COUNT = 11;
     for (let i = 0; i < NODE_COUNT; i++) {
       const day = Math.round((totalDays / (NODE_COUNT - 1)) * i);
       const p = (day / totalDays) * 100;
       
-      // 生成圆点
       const node = document.createElement("div");
       node.className = "clock-m-node";
       node.style.left = p + "%";
       node.dataset.day = day;
       barContainer.appendChild(node);
 
-      // 生成文字标签
       const lbl = document.createElement("div");
       lbl.className = "clock-m-label";
       lbl.style.left = p + "%";
@@ -514,7 +549,6 @@ function updateClock() {
     }
   }
   
-  // 直接比对天数，点亮已经过的节点和标签
   const allNodes = barContainer.querySelectorAll(".clock-m-node");
   const allLabels = labelsContainer.querySelectorAll(".clock-m-label");
   
@@ -527,7 +561,7 @@ function updateClock() {
       if (allLabels[i]) allLabels[i].classList.remove("passed");
     }
   });
-} /* ★ 修复了这里缺失的大括号，导致时钟完全失效 */
+}
 
 let clockTimer = null;
 
