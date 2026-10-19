@@ -117,26 +117,23 @@ function createPetal(instant) {
     const pick = FUN_ICONS[Math.floor(Math.random() * FUN_ICONS.length)];
 
     if (USE_IMAGE) {
-      // 用 PNG 图片
       petal.style.width = (size + 12) + "px";
       petal.style.height = (size + 12) + "px";
       petal.style.backgroundImage = `url(${pick})`;
     } else {
-      // 用 emoji
       petal.style.width = (size + 14) + "px";
       petal.style.height = (size + 14) + "px";
       petal.style.fontSize = (size + 8) + "px";
       petal.textContent = pick;
     }
   } else {
-    // 浪漫模式：CSS 花瓣
     petal.style.width = size + "px";
     petal.style.height = size + "px";
   }
 
   petal.style.left = Math.random() * 100 + "vw";
 
-  const duration = Math.random() * 8 + 8;
+  const duration = Math.random() * 8 + 8; // 8~16 秒
   petal.style.animationDuration = duration + "s";
 
   if (instant) {
@@ -147,22 +144,21 @@ function createPetal(instant) {
 
   petal.style.opacity = Math.random() * 0.5 + 0.4;
 
+  // 动画结束删掉
   petal.addEventListener("animationend", () => {
     petal.remove();
   });
 
+  // ★ 关键：安全兜底，最迟（动画时长 + 3秒）强制删除，防止内存泄漏
+  const lifeTime = (duration + 3) * 1000;
+  setTimeout(() => {
+    if (petal.parentNode) {
+      petal.remove();
+    }
+  }, lifeTime);
+
   sakuraContainer.appendChild(petal);
 }
-
-function fillPetals() {
-  sakuraContainer.innerHTML = "";
-  for (let i = 0; i < PETAL_COUNT; i++) {
-    createPetal(true);
-  }
-}
-
-fillPetals();
-setInterval(() => createPetal(false), PETAL_INTERVAL);
 
 
 /* ========== 4. 滚动淡入 + 淡出 ========== */
