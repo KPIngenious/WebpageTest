@@ -357,7 +357,7 @@ body.theme-fun .countdown-card {
 }
 
 .countdown-title {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-mid);
   margin-bottom: 10px;
   letter-spacing: 1px;
@@ -407,7 +407,7 @@ body.theme-fun .countdown-card {
   }
 
   .countdown-title {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .countdown-value span {
