@@ -223,19 +223,58 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   .event::after, .event.left::after, .event.right::after { left: 18px !important; right: auto !important; transform: translate(-50%, -50%) !important; top: 30px !important; }
   body.theme-fun .event::after { width: 24px; height: 24px; }
 
-  /* 全屏时钟模式的手机适配 */
-  #clock-view { padding: 2vh 3vw; }
-  .clock-layout { flex-direction: row; }
-  .clock-days { font-size: 2rem; }
-  .clock-subdetail { font-size: 0.8rem; }
-  #clock-time { font-size: 2.5rem; letter-spacing: 2px; }
-  .clock-cd-val { font-size: 1rem; }
-  .clock-cd-val span { font-size: 1.5rem; }
-  .clock-cd-title { font-size: 0.7rem; }
+  /* ========== 全屏时钟模式的手机极限优化 ========== */
+  #clock-view { 
+    padding: 2vh 4vw; 
+    overflow: hidden; /* 禁止出现滚动条 */
+  }
+  
+  .clock-layout { 
+    flex-direction: row;
+    height: 75vh; /* 上半部分占 75% */
+  }
+  
+  .clock-panel { 
+    justify-content: center; 
+    gap: 1vh;
+  }
+
+  .clock-label { font-size: 2.5vw; }
+  .clock-days { font-size: 8vw; }
+  .clock-days small { font-size: 3vw; }
+  .clock-subdetail { font-size: 2.5vw; }
+
+  #clock-time { 
+    font-size: 12vw; 
+    letter-spacing: 1vw; 
+  }
+
+  .clock-cd-title { font-size: 2.5vw; }
+  .clock-cd-val { font-size: 3vw; }
+  .clock-cd-val span { font-size: 6vw; }
+
+  /* 底部里程碑区域 */
+  .clock-milestone {
+    height: 15vh; /* 下半部分占 15% */
+    margin-top: 2vh;
+  }
+  
+  .clock-milestone .milestone-bar {
+    height: 8vh;
+  }
+
+  .clock-milestone .milestone-label {
+    font-size: 2.5vw;
+    bottom: -4vh;
+  }
+
+  .clock-milestone .milestone-marker img {
+    width: 12vw; /* GIF 随屏幕宽度缩放 */
+  }
 
   /* 如果是竖屏状态进入全屏，提示用户横屏 */
   @media (orientation: portrait) {
-    .clock-hint { display: block; }
+    .clock-hint { display: block; font-size: 4vw; }
     .clock-layout, .clock-milestone { display: none; }
   }
 }
