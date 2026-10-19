@@ -143,7 +143,14 @@
       <!-- 中间列：时钟 -->
       <div class="clock-column center-col">
         <div class="clock-box box-time">
+          <!-- 顶部留白：显示 AM/PM -->
+          <div class="clock-ampm" id="clock-ampm"></div>
+          
+          <!-- 中间核心时钟 -->
           <div class="flip-clock" id="flip-clock"></div>
+          
+          <!-- 底部留白：放切换按钮 -->
+          <button class="clock-toggle-btn" id="clock-toggle-btn">24小时制</button>
         </div>
       </div>
 
