@@ -564,6 +564,24 @@ function updateClock() {
 }
 
 let clockTimer = null;
+let hideButtonsTimer = null; // ★ 新增：用来存储隐藏按钮的定时器
+
+// ★ 重置按钮隐藏的定时器
+function resetHideTimer() {
+  if (!document.body.classList.contains("in-clock-mode")) return;
+
+  document.body.classList.remove("hide-buttons");
+
+  if (hideButtonsTimer) {
+    clearTimeout(hideButtonsTimer);
+  }
+
+  hideButtonsTimer = setTimeout(() => {
+    if (document.body.classList.contains("in-clock-mode")) {
+      document.body.classList.add("hide-buttons");
+    }
+  }, 3000); // 3秒后隐藏按钮
+}
 
 function toggleClock(enter) {
   if (enter) {
@@ -580,9 +598,12 @@ function toggleClock(enter) {
     
     clockBtn.textContent = "❌";
     clockBtn.title = "退出时钟模式";
+
+    resetHideTimer(); // ★ 启动隐藏定时器
   } else {
     clockOverlay.classList.remove("show");
     document.body.classList.remove("in-clock-mode");
+    document.body.classList.remove("hide-buttons"); // ★ 清理隐藏状态
     document.body.style.overflow = ""; 
     
     if (document.fullscreenElement && document.exitFullscreen) {
@@ -592,6 +613,9 @@ function toggleClock(enter) {
     if (clockTimer) {
       clearInterval(clockTimer);
       clockTimer = null;
+    }
+    if (hideButtonsTimer) { // ★ 清理定时器
+      clearTimeout(hideButtonsTimer);
     }
     
     clockBtn.textContent = "⏰";
@@ -609,3 +633,26 @@ if (closeClockMobile) {
     toggleClock(false);
   });
 }
+
+// ★ 监听全屏状态下的屏幕点击，唤起按钮
+clockOverlay.addEventListener("click", (e) => {
+  if (e.target.closest('.theme-btn')) return;
+  resetHideTimer();
+});
+
+// ★ 鼠标防误触：悬浮时不隐藏
+clockBtn.addEventListener("mouseenter", () => {
+  if (hideButtonsTimer) clearTimeout(hideButtonsTimer);
+  document.body.classList.remove("hide-buttons");
+});
+clockBtn.addEventListener("mouseleave", () => {
+  resetHideTimer();
+});
+
+themeBtn.addEventListener("mouseenter", () => {
+  if (hideButtonsTimer) clearTimeout(hideButtonsTimer);
+  document.body.classList.remove("hide-buttons");
+});
+themeBtn.addEventListener("mouseleave", () => {
+  resetHideTimer();
+});
