@@ -261,7 +261,7 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   }
 
   .clock-cd-title { font-size: 2vw; }
-  .clock-cd-val { font-size: 2.5vw; }
+  .clock-cd-val { font-size: 1vw; }
   .clock-cd-val span { font-size: 4.5vw; }
 
   /* 下半部分：里程碑 */
