@@ -357,7 +357,7 @@ body.theme-fun .countdown-card {
 }
 
 .countdown-title {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-mid);
   margin-bottom: 10px;
   letter-spacing: 1px;
@@ -619,7 +619,7 @@ body.theme-fun .event .card:hover {
   body.theme-fun .event::after,
   body.theme-fun .event.left::after,
   body.theme-fun .event.right::after {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
   }
 }
