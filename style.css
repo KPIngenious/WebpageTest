@@ -85,13 +85,14 @@ body {
   top: auto;
   bottom: 20px;
   right: 20px;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   background: var(--card-bg);
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  font-size: 22px;
+  font-size: 18px;
+  padding-bottom: 5px;
   cursor: pointer;
   z-index: 100;
   transition: transform 0.3s ease, background 0.3s ease;
@@ -103,7 +104,20 @@ body {
 
 /* 照片墙导航按钮（叠在主题按钮上面） */
 .photo-nav-btn {
-  bottom: 80px;  /* 主题按钮在 20px，这里往上挪 60px */
+  bottom: 65px;  /* 主题按钮在 20px，这里往上挪 45px */
+}
+
+body.theme-fun .theme-btn {
+  background: #151014;      /* 保持深色 */
+  border: 1px solid #c9a04a; /* 加一圈金边 */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+
+/* 鼠标悬浮时的微调 */
+body.theme-fun .theme-btn:hover {
+  //background: #E2C98F;      /* 稍微亮一点的暗金 */
+  box-shadow: 0 6px 20px rgba(201, 160, 74, 0.5);
 }
 
 /* ========== 顶部标题 ========== */
@@ -532,6 +546,7 @@ body.theme-fun .event.right::after {
 }
 /* 万兽之王：卡片加金属边框 */
 body.theme-fun .event .card {
+  background: #1a1215;
   border: 1px solid #3a2e24;
   box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,160,74,0.08);
 }
