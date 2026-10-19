@@ -169,14 +169,13 @@ const observer = new IntersectionObserver((entries) => {
     const el = entry.target;
 
     if (entry.isIntersecting) {
+      // 当元素进入屏幕（无论从下面上来，还是从上面下来）
       el.classList.add("show");
       el.classList.remove("fade-out");
     } else {
-      const rect = entry.boundingClientRect;
-      if (rect.top < 0) {
-        el.classList.add("fade-out");
-        el.classList.remove("show");
-      }
+      // 当元素离开屏幕（无论从上面走，还是从下面走）
+      el.classList.remove("show");
+      el.classList.add("fade-out");
     }
   });
 }, {
@@ -185,7 +184,6 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 events.forEach(event => observer.observe(event));
-
 
 /* ========== 5. 图片点击放大 ========== */
 const lightbox = document.getElementById("lightbox");
