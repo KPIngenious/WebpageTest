@@ -64,6 +64,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 @keyframes fall {
   0% {
@@ -73,7 +74,7 @@ body {
   10% { opacity: 0.9; }
   90% { opacity: 0.9; }
   100% {
-    transform: translateY(105vh) rotate(720deg) translateX(80px);
+    transform: translateY(120vh) rotate(720deg) translateX(80px);
     opacity: 0;
   }
 }
