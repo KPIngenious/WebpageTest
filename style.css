@@ -101,18 +101,17 @@ body {
   transform: scale(1.1);
 }
 
-/* 照片墙导航按钮（叠在主题按钮上面） */
+/* 照片墙导航按钮 */
 .photo-nav-btn {
-  bottom: 130px;  /* 主题按钮在 20px，这里往上挪 55px */
+  bottom: 130px;
 }
 
 body.theme-fun .theme-btn {
-  background: #151014;      /* 保持深色 */
-  border: 1px solid #c9a04a; /* 加一圈金边 */
+  background: #151014;
+  border: 1px solid #c9a04a;
   box-shadow: 0 4px 16px rgba(0,0,0,0.5);
 }
 
-/* 鼠标悬浮时的微调 */
 body.theme-fun .theme-btn:hover {
   box-shadow: 0 6px 20px rgba(201, 160, 74, 0.5);
 }
@@ -138,7 +137,7 @@ header p {
   transition: color 0.6s ease;
 }
 
-/* 万兽之王：标题更硬朗，带金色光晕 */
+/* 万兽之王：标题 */
 body.theme-fun header h1 {
   font-weight: 900;
   letter-spacing: 4px;
@@ -331,9 +330,8 @@ body.theme-fun .counter .number {
     font-size: 0.95rem;
     letter-spacing: 2px;
   }
-  /* 手机端缩小奔跑的小人 */
   .milestone-marker img {
-    width: 45px;  /* 电脑上是 48px，手机变小 */
+    width: 45px;
   }
 }
 
@@ -402,36 +400,28 @@ body.theme-fun .countdown-card {
 
 /* 手机适配 */
 @media (max-width: 700px) {
-  
-  /* ========== 手机端倒计时特殊排版 ========== */
   .countdown-section {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 分成左右两列 */
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
     padding: 0 15px;
     margin-bottom: 40px;
   }
-
-  /* 第一个卡片（周年）跨满两列，独占一行 */
   .countdown-card:first-child {
     grid-column: 1 / -1;
   }
-
   .countdown-card {
-    min-width: 0; /* 解除宽度限制，让网格自己算 */
+    min-width: 0;
     padding: 12px 10px;
     max-width: none;
   }
-
   .countdown-title {
     font-size: 0.7rem;
     white-space: nowrap;
   }
-
   .countdown-value span {
     font-size: 2rem;
   }
-  
   .countdown-date {
     font-size: 0.7rem;
   }
@@ -504,9 +494,7 @@ body.theme-fun .event::after {
   height: 40px;
 }
 
-/* 左边卡片的结点微调 */
 body.theme-fun .event.left::after { right: -20px; }
-/* 右边卡片的结点微调 */
 body.theme-fun .event.right::after { left: -20px; }
 
 .event .date {
@@ -532,7 +520,6 @@ body.theme-fun .event.right::after { left: -20px; }
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
-/* 万兽之王：卡片加金属边框 */
 body.theme-fun .event .card {
   background: #1a1215;
   border: 1px solid #3a2e24;
@@ -592,17 +579,9 @@ body.theme-fun .event .card:hover {
 
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
-  .timeline {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .timeline::before {
-    left: 18px;
-    transform: none;
-  }
-  .event,
-  .event.left,
-  .event.right {
+  .timeline { padding-left: 0; padding-right: 0; }
+  .timeline::before { left: 18px; transform: none; }
+  .event, .event.left, .event.right {
     width: 100% !important;
     left: 0 !important;
     text-align: left !important;
@@ -610,25 +589,17 @@ body.theme-fun .event .card:hover {
     padding-right: 10px !important;
     margin-left: 0 !important;
   }
-  .event::after,
-  .event.left::after,
-  .event.right::after {
+  .event::after, .event.left::after, .event.right::after {
     left: 18px !important;
     right: auto !important;
     transform: none !important;
     margin-left: -10px !important;
   }
-  .event .card {
-    display: block;
-    text-align: left;
-  }
-  .event .date {
-    text-align: left;
-  }
+  .event .card { display: block; text-align: left; }
+  .event .date { text-align: left; }
   .counter .number { font-size: 3rem; }
   .counter .detail { font-size: 0.9rem; }
 
-  /* 手机端的图片结点大小 */
   body.theme-fun .event::after,
   body.theme-fun .event.left::after,
   body.theme-fun .event.right::after {
@@ -657,7 +628,7 @@ body.theme-fun .event .card:hover {
 
 .photo-wall {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 电脑上 3 列 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 
@@ -678,21 +649,19 @@ body.theme-fun .event .card:hover {
   position: relative;
 }
 
-/* 万兽之王主题边框 */
 body.theme-fun .photo-wall img {
   border: 1px solid #3a2e24;
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* 手机适配 */
 @media (max-width: 700px) {
   .photo-wall {
-    grid-template-columns: repeat(2, 1fr); /* 手机上 2 列 */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 }
 
-/* ========== 时钟按钮 (最上层) ========== */
+/* ========== 时钟按钮 ========== */
 .clock-btn {
   bottom: 75px;
   font-size: 20px;
@@ -704,7 +673,7 @@ body.theme-fun .photo-wall img {
   z-index: 10000 !important;
 }
 
-/* 隐藏照片墙按钮的逻辑 */
+/* 隐藏照片墙按钮 */
 body.in-clock-mode .photo-nav-btn {
   display: none !important;
 }
@@ -783,11 +752,6 @@ body.in-clock-mode .photo-nav-btn {
   border: 1px solid var(--main-light);
   transition: background 0.6s ease, border-color 0.6s ease;
 }
-body.theme-fun .clock-box {
-  background: #1a1215;
-  border-color: #3a2e24;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
-}
 
 .left-col .clock-box,
 .right-col .clock-box {
@@ -799,6 +763,55 @@ body.theme-fun .clock-box {
   border: none; 
   background: transparent; 
   box-shadow: none;
+  position: relative;
+  justify-content: space-between;
+  padding: 4vh 0;
+}
+
+/* AM / PM 文字 */
+.clock-ampm {
+  height: 4vh;
+  font-size: 2vw;
+  font-weight: bold;
+  color: var(--main);
+  letter-spacing: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+body.theme-fun .clock-ampm {
+  color: #c9a04a;
+}
+
+/* 切换按钮 */
+.clock-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--main-light);
+  color: var(--text-mid);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.clock-toggle-btn:hover {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+}
+body.theme-fun .clock-toggle-btn {
+  border-color: #3a2e24;
+  color: #b8a898;
+}
+body.theme-fun .clock-toggle-btn:hover {
+  background: #c9a04a;
+  color: #0a0a0f;
+  border-color: #c9a04a;
+}
+
+body.theme-fun .clock-box {
+  background: #1a1215;
+  border-color: #3a2e24;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
 }
 
 .box-days .c-label {
@@ -843,32 +856,33 @@ body.theme-fun .clock-box {
 /* 中间时钟数字 */
 .flip-clock {
   display: flex;
-  align-items: center; /* 确保冒号和数字垂直居中 */
+  align-items: center;
   gap: 0.5vw;
   font-size: 8vw; 
   font-weight: bold;
   color: var(--main);
-  /* ★ 关键：强制使用等宽字体，让 1 和 8 占据一样的宽度 */
   font-family: "Courier New", Courier, monospace; 
 }
 
 .flip-digit {
   position: relative;
   display: inline-flex;
-  justify-content: center; /* 数字在卡片内居中 */
+  justify-content: center;
   align-items: center;
   background: var(--bg-bottom);
   border-radius: 16px;
   padding: 0; 
-  /* ★ 关键：给卡片一个固定的宽度，大约是字体的 0.65 倍 */
   width: 0.65em; 
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 body.theme-fun .flip-digit {
-  background: #0a0a0f;
+  background: #15101a;
+  border: 1px solid #3a2e24;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
+
 .flip-colon {
   display: flex;
   align-items: center;
@@ -998,4 +1012,7 @@ body.theme-fun .clock-bottom {
   .clock-m-labels { margin-top: 5px; height: 15px; }
   .clock-m-label { font-size: 0.65rem; white-space: nowrap; }
   .clock-m-node { width: 10px; height: 10px; }
+  .center-col .clock-box { padding: 2vh 0; }
+  .clock-ampm { font-size: 3vw; height: 3vh; }
+  .clock-toggle-btn { font-size: 0.75rem; padding: 4px 12px; }
 }
