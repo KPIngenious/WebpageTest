@@ -149,14 +149,6 @@ function createPetal(instant) {
     petal.remove();
   });
 
-  // ★ 关键：安全兜底，最迟（动画时长 + 6秒）强制删除，防止内存泄漏
-  const lifeTime = (duration + 6) * 1000;
-  setTimeout(() => {
-    if (petal.parentNode) {
-      petal.remove();
-    }
-  }, lifeTime);
-
   sakuraContainer.appendChild(petal);
 }
 
@@ -168,7 +160,20 @@ function fillPetals() {
 }
 
 fillPetals();
-setInterval(() => createPetal(false), PETAL_INTERVAL);
+
+// 用一个变量存定时器
+let petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
+
+// 监听页面可见性（切换标签页/切后台）
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    // 切到后台：暂停生成新花瓣
+    clearInterval(petalTimer);
+  } else {
+    // 切回前台：恢复生成新花瓣
+    petalTimer = setInterval(() => createPetal(false), PETAL_INTERVAL);
+  }
+});
 
 
 /* ========== 4. 滚动淡入 + 淡出 ========== */
