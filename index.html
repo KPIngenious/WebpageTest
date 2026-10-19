@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>我们的故事</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -11,134 +11,141 @@
 <!-- 掉落物容器 -->
 <div id="sakura"></div>
 
-<!-- 主题切换按钮 -->
-<button id="theme-btn" class="theme-btn">🌸</button>
-
-<header>
-  <h1>我们的故事</h1>
-  <p>从遇见你开始，每一刻都值得记住</p>
-</header>
-
-<!-- 计数器 -->
-<div class="counter">
-  <div class="label">我们已经在一起</div>
-  <div>
-    <span class="number" id="days">0</span>
-    <span class="unit">天</span>
-  </div>
-  <div class="detail">
-    <span class="num" id="y">0</span> 年
-    <span class="num" id="mo">0</span> 月
-    <span class="num" id="d">0</span> 天
-    <span class="num" id="h">0</span> 小时
-    <span class="num" id="mi">0</span> 分
-    <span class="num" id="s">0</span> 秒
-  </div>
-  <div class="since">从 2023 年 1 月 5 日 至今</div>
+<!-- 按钮容器 -->
+<div class="floating-buttons">
+  <button id="fullscreen-btn" class="theme-btn" title="全屏时钟模式">⛶</button>
+  <button id="theme-btn" class="theme-btn">🌸</button>
 </div>
 
-<!-- 里程碑进度条 -->
-<div class="milestone">
-  <div class="milestone-title">我们的 10 年</div>
+<!-- 正常阅读模式 -->
+<div id="main-view">
+  <header>
+    <h1>我们的故事</h1>
+    <p>从遇见你开始，每一刻都值得记住</p>
+  </header>
 
-  <div class="milestone-bar">
-    <div class="milestone-line"></div>
-    <div class="milestone-fill" id="milestone-fill"></div>
-
-    <!-- 节点会由 JS 生成 -->
-
-    <div class="milestone-marker" id="milestone-marker">
-    <img src="images/walking.gif">
+  <div class="counter">
+    <div class="label">我们已经在一起</div>
+    <div>
+      <span class="number" id="days">0</span>
+      <span class="unit">天</span>
+    </div>
+    <div class="detail">
+      <span class="num" id="y">0</span> 年
+      <span class="num" id="mo">0</span> 月
+      <span class="num" id="d">0</span> 天
+      <span class="num" id="h">0</span> 小时
+      <span class="num" id="mi">0</span> 分
+      <span class="num" id="s">0</span> 秒
+    </div>
+    <div class="since">从 2023 年 1 月 5 日 至今</div>
   </div>
 
-  <div class="milestone-labels" id="milestone-labels"></div>
+  <div class="milestone">
+    <div class="milestone-title">我们的 10 年</div>
+    <div class="milestone-bar">
+      <div class="milestone-line"></div>
+      <div class="milestone-fill" id="milestone-fill"></div>
+      <div class="milestone-marker" id="milestone-marker">
+        <img src="images/walking.gif" alt="奔跑">
+      </div>
+      <div class="milestone-labels" id="milestone-labels"></div>
+    </div>
+  </div>
+
+  <div class="countdown-section">
+    <div class="countdown-card">
+      <div class="countdown-title" id="title-anniversary">距离周年纪念</div>
+      <div class="countdown-value"><span id="cd-anniversary">--</span> 天</div>
+      <div class="countdown-date">05 Jan</div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-title" id="title-her">距离Cindy生日</div>
+      <div class="countdown-value"><span id="cd-her">--</span> 天</div>
+      <div class="countdown-date">03 Jun</div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-title" id="title-him">距离Tang生日</div>
+      <div class="countdown-value"><span id="cd-him">--</span> 天</div>
+      <div class="countdown-date">26 Jan</div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="event left">
+      <div class="date">2023 年 1 月 5 日</div>
+      <div class="card"><h3>故事开始</h3><p>那一天，我们决定在一起。</p></div>
+    </div>
+    <div class="event right">
+      <div class="date">2023 年 2 月</div>
+      <div class="card"><h3>第一次见面</h3><p>我驱车从新山到永平，第一次驾远路去见一个人。玩了一趟Batu Pahat后，送你到家前我们在车上聊了很久。</p></div>
+    </div>
+    <div class="event left">
+      <div class="date">2023 年 4 月</div>
+      <div class="card"><h3>第一次约会</h3><p>你第一次和朋友从永平打巴士下来玩</p></div>
+    </div>
+    <div class="event right">
+      <div class="date">2024 年 2 月 16 日</div>
+      <div class="card"><h3>我倒下了</h3><p>便血入院，医生检查后说是可能肿瘤。手术前一天你从永平独自一人搭巴士下来医院看我</p><img src="images/photo1.jpg"></div>
+    </div>
+    <div class="event left">
+      <div class="date">2024 年 3 月</div>
+      <div class="card"><h3>我出院了</h3><p>虽然你已经回永平工作了，但还是每天陪着我，帮我转移注意力。所幸检查报告出来不是肿瘤。</p></div>
+    </div>
+    <div class="event right">
+      <div class="date">2024 年 5 月</div>
+      <div class="card"><h3>你搬来和我一起</h3><p>你收拾行李离开了从小住到大的家，来到这里和我一起生活。</p></div>
+    </div>
+    <div class="event left">
+      <div class="date">现在</div>
+      <div class="card"><h3>还在继续</h3><p>故事还很长，慢慢写下去。</p></div>
+    </div>
+  </div>
+  <div class="ending">❤ 未完待续 ❤</div>
 </div>
 
-
-<!-- 倒计时区域 -->
-<div class="countdown-section">
-  <div class="countdown-card">
-    <div class="countdown-title" id="title-anniversary">距离周年纪念</div>
-    <div class="countdown-value"><span id="cd-anniversary">--</span> 天</div>
-    <div class="countdown-date">05 Jan</div>
-  </div>
+<!-- 全屏时钟模式 -->
+<div id="clock-view">
+  <div class="clock-hint">请将手机横屏，享受最佳体验</div>
   
-  <div class="countdown-card">
-    <div class="countdown-title" id="title-her">距离Cindy生日</div>
-    <div class="countdown-value"><span id="cd-her">--</span> 天</div>
-    <div class="countdown-date">03 Jun</div>
+  <div class="clock-layout">
+    <div class="clock-panel clock-left">
+      <div class="clock-label">在一起</div>
+      <div class="clock-days"><span id="clock-days">0</span> <small>天</small></div>
+      <div class="clock-subdetail" id="clock-detail">0年0月0天</div>
+    </div>
+
+    <div class="clock-panel clock-center">
+      <div id="clock-time">00:00:00</div>
+    </div>
+
+    <div class="clock-panel clock-right">
+      <div class="clock-cd-item">
+        <div class="clock-cd-title" id="clock-title-ann">周年纪念</div>
+        <div class="clock-cd-val"><span id="clock-cd-ann">--</span> 天</div>
+      </div>
+      <div class="clock-cd-item">
+        <div class="clock-cd-title" id="clock-title-her">Cindy生日</div>
+        <div class="clock-cd-val"><span id="clock-cd-her">--</span> 天</div>
+      </div>
+      <div class="clock-cd-item">
+        <div class="clock-cd-title" id="clock-title-him">Tang生日</div>
+        <div class="clock-cd-val"><span id="clock-cd-him">--</span> 天</div>
+      </div>
+    </div>
   </div>
-  
-  <div class="countdown-card">
-    <div class="countdown-title" id="title-him">距离Tang生日</div>
-    <div class="countdown-value"><span id="cd-him">--</span> 天</div>
-    <div class="countdown-date">26 Jan</div>
+
+  <div class="clock-milestone">
+    <div class="milestone-bar">
+      <div class="milestone-line"></div>
+      <div class="milestone-fill" id="clock-milestone-fill"></div>
+      <div class="milestone-marker" id="clock-milestone-marker">
+        <img src="images/walking.gif" alt="奔跑">
+      </div>
+      <div class="milestone-labels" id="clock-milestone-labels"></div>
+    </div>
   </div>
 </div>
-
-<!-- 时间线 -->
-<div class="timeline">
-
-  <div class="event left">
-    <div class="date">2023 年 1 月 5 日</div>
-    <div class="card">
-      <h3>故事开始</h3>
-      <p>那一天，我们决定在一起。</p>
-    </div>
-  </div>
-
-  <div class="event right">
-    <div class="date">2023 年 2 月</div>
-    <div class="card">
-      <h3>第一次见面</h3>
-      <p>我驱车从新山到永平，第一次驾远路去见一个人。玩了一趟Batu Pahat后，送你到家前我们在车上聊了很久。</p>
-    </div>
-  </div>
-
-  <div class="event left">
-    <div class="date">2023 年 4 月</div>
-    <div class="card">
-      <h3>第一次约会</h3>
-      <p>你第一次和朋友从永平打巴士下来玩</p>
-    </div>
-  </div>
-
-  <div class="event right">
-    <div class="date">2024 年 2 月 16 日</div>
-    <div class="card">
-      <h3>我倒下了</h3>
-      <p>便血入院，医生检查后说是可能肿瘤。手术前一天你从永平独自一人搭巴士下来医院看我</p>
-      <img src="images/photo1.jpg">
-    </div>
-  </div>
-
-  <div class="event left">
-    <div class="date">2024 年 3 月</div>
-    <div class="card">
-      <h3>我出院了</h3>
-      <p>虽然你已经回永平工作了，但还是每天陪着我，帮我转移注意力。所幸检查报告出来不是肿瘤。</p>
-    </div>
-  </div>
-
-  <div class="event right">
-    <div class="date">2024 年 5 月</div>
-    <div class="card">
-      <h3>你搬来和我一起</h3>
-      <p>你收拾行李离开了从小住到大的家，来到这里和我一起生活。</p>
-    </div>
-  </div>
-
-  <div class="event left">
-    <div class="date">现在</div>
-    <div class="card">
-      <h3>还在继续</h3>
-      <p>故事还很长，慢慢写下去。</p>
-    </div>
-  </div>
-
-</div>
-
-<div class="ending">❤ 未完待续 ❤</div>
 
 <div id="lightbox" class="lightbox">
   <img id="lightbox-img" src="" alt="">
