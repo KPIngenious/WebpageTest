@@ -101,10 +101,9 @@ body {
   transform: scale(1.1);
 }
 
-
 /* 照片墙导航按钮（叠在主题按钮上面） */
 .photo-nav-btn {
-  bottom: 75px;  /* 主题按钮在 20px，这里往上挪 55px */
+  bottom: 130px;  /* 主题按钮在 20px，这里往上挪 55px */
 }
 
 body.theme-fun .theme-btn {
@@ -113,10 +112,8 @@ body.theme-fun .theme-btn {
   box-shadow: 0 4px 16px rgba(0,0,0,0.5);
 }
 
-
 /* 鼠标悬浮时的微调 */
 body.theme-fun .theme-btn:hover {
-  //background: #E2C98F;      /* 稍微亮一点的暗金 */
   box-shadow: 0 6px 20px rgba(201, 160, 74, 0.5);
 }
 
@@ -143,7 +140,6 @@ header p {
 
 /* 万兽之王：标题更硬朗，带金色光晕 */
 body.theme-fun header h1 {
-  //font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: 900;
   letter-spacing: 4px;
   text-shadow: 0 0 30px rgba(201, 160, 74, 0.35);
@@ -341,7 +337,6 @@ body.theme-fun .counter .number {
   }
 }
 
-
 /* ========== 倒计时区域 ========== */
 .countdown-section {
   position: relative;
@@ -440,9 +435,7 @@ body.theme-fun .countdown-card {
   .countdown-date {
     font-size: 0.7rem;
   }
-  
 }
-
 
 /* ========== 时间线 ========== */
 .timeline {
@@ -504,22 +497,17 @@ body.theme-fun .timeline::before {
 
 body.theme-fun .event::after {
   background: url('images/specialtimepoint.png') center/contain no-repeat;
-  background-color: transparent;   /* 去掉原来的底色 */
-  border: none;                    /* 去掉原来的边框 */
-  box-shadow: none;                /* 去掉原来的光晕 */
-  width: 40px;                     /* 调整成图片的合适大小 */
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  width: 40px;
   height: 40px;
 }
 
 /* 左边卡片的结点微调 */
-body.theme-fun .event.left::after {
-  right: -20px; /* 根据视觉效果微调，比如 -9px 或 -11px */
-}
-
+body.theme-fun .event.left::after { right: -20px; }
 /* 右边卡片的结点微调 */
-body.theme-fun .event.right::after {
-  left: -20px;
-}
+body.theme-fun .event.right::after { left: -20px; }
 
 .event .date {
   font-size: 0.9rem;
@@ -675,8 +663,8 @@ body.theme-fun .event .card:hover {
 
 .photo-wall img {
   width: 100%;
-  aspect-ratio: 1 / 1; /* 强制 1:1 正方形 */
-  object-fit: cover;   /* 横竖图自动裁剪填满，不拉伸变形 */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -706,17 +694,17 @@ body.theme-fun .photo-wall img {
 
 /* ========== 时钟按钮 (最上层) ========== */
 .clock-btn {
-  bottom: 130px;
+  bottom: 75px;
   font-size: 20px;
-  z-index: 10000 !important; /* 压过遮罩层 */
+  z-index: 10000 !important;
 }
 
-/* 把主题按钮也提上来，方便全屏下切换主题 */
+/* 把主题按钮也提上来 */
 .theme-btn {
   z-index: 10000 !important;
 }
 
-/* 隐藏照片墙按钮的逻辑（在 JS 中控制 class） */
+/* 隐藏照片墙按钮的逻辑 */
 body.in-clock-mode .photo-nav-btn {
   display: none !important;
 }
@@ -726,7 +714,7 @@ body.in-clock-mode .photo-nav-btn {
   position: fixed;
   inset: 0;
   background: var(--bg-top);
-  z-index: 9998; /* 比按钮低，比页面高 */
+  z-index: 9998;
   display: none;
   flex-direction: column;
   opacity: 0;
@@ -764,7 +752,7 @@ body.in-clock-mode .photo-nav-btn {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2vh 3vw;
+  padding: 2vh 2vw;
   box-sizing: border-box;
 }
 
@@ -775,29 +763,25 @@ body.in-clock-mode .photo-nav-btn {
   margin-bottom: 2vh;
 }
 
-.clock-bottom {
-  flex: 2;
+.clock-column {
   display: flex;
-  background: rgba(0,0,0,0.03);
-  border-radius: 20px;
-  padding: 10px 20px;
-  align-items: center;
+  flex-direction: column;
+  gap: 2vh;
 }
-body.theme-fun .clock-bottom {
-  background: rgba(255,255,255,0.03);
-}
+.left-col { flex: 2; }
+.center-col { flex: 5; }
+.right-col { flex: 2; }
 
-/* 顶部三区块 */
 .clock-box {
   background: var(--card-bg);
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid var(--main-light);
-  transition: background 0.6s ease;
+  transition: background 0.6s ease, border-color 0.6s ease;
 }
 body.theme-fun .clock-box {
   background: #1a1215;
@@ -805,26 +789,57 @@ body.theme-fun .clock-box {
   box-shadow: 0 4px 24px rgba(0,0,0,0.6);
 }
 
-.box-days { flex: 2.5; }
-.box-time { flex: 5; }
-.box-countdowns { flex: 2.5; }
+.left-col .clock-box,
+.right-col .clock-box {
+  flex: 1;
+}
 
-/* 左侧天数 */
+.center-col .clock-box {
+  flex: 1;
+  border: none; 
+  background: transparent; 
+  box-shadow: none;
+}
+
 .box-days .c-label {
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: var(--text-mid);
-  letter-spacing: 4px;
   margin-bottom: 1vh;
+  text-align: center;
 }
 .box-days .c-value {
-  font-size: 6vw;
-  font-weight: bold;
-  color: var(--main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   line-height: 1;
 }
-.box-days .c-unit { font-size: 1.5rem; }
+.box-days .c-value #clock-days {
+  font-size: 3vw; 
+  font-weight: bold;
+  color: var(--main);
+  margin-bottom: 4px; 
+}
+.box-days .c-unit { 
+  font-size: 1rem; 
+  color: var(--text-mid);
+  font-weight: normal; 
+}
+.box-cd .c-cd-title {
+  font-size: 1rem;
+  color: var(--text-mid);
+  margin-bottom: 1vh;
+  text-align: center;
+}
+.box-cd .c-cd-value {
+  font-size: 1.2rem;
+  color: var(--text-mid);
+}
+.box-cd .c-cd-value span {
+  font-size: 3vw;
+  font-weight: bold;
+  color: var(--main);
+}
 
-/* 中间时钟 */
 .flip-clock {
   display: flex;
   gap: 0.5vw;
@@ -836,8 +851,8 @@ body.theme-fun .clock-box {
   position: relative;
   display: inline-block;
   background: var(--bg-bottom);
-  border-radius: 12px;
-  padding: 0 1vw;
+  border-radius: 16px;
+  padding: 0 1.5vw;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
@@ -847,29 +862,24 @@ body.theme-fun .flip-digit {
 .flip-colon {
   display: flex;
   align-items: center;
-  font-size: 6vw;
+  font-size: 7vw;
   transform: translateY(-5%);
 }
 
-/* 右侧倒计时 */
-.box-countdowns {
-  justify-content: space-evenly;
-  padding: 2vh 0;
-}
-.c-cd-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 1.2rem;
-  color: var(--text-mid);
-}
-.c-cd-item span:last-child {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--main);
-}
-
 /* 底部里程碑 */
+.clock-bottom {
+  flex: 2;
+  display: flex;
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 10px 20px;
+  align-items: center;
+  border: 1px solid var(--main-light);
+}
+body.theme-fun .clock-bottom {
+  background: #1a1215;
+  border-color: #3a2e24;
+}
 .clock-milestone {
   width: 100%;
   position: relative;
@@ -900,7 +910,7 @@ body.theme-fun .flip-digit {
   transition: left 1s ease-out;
 }
 .clock-m-marker img {
-  width: 50px;
+  width: 40px;
   height: auto;
   filter: drop-shadow(0 0 5px var(--main));
 }
@@ -913,76 +923,69 @@ body.theme-fun .flip-digit {
 .clock-m-label {
   position: absolute;
   transform: translateX(-50%);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-light);
+  white-space: nowrap; 
 }
 .clock-m-label.passed {
   color: var(--main);
   font-weight: bold;
 }
 
+/* 全屏模式里程碑的圆点 */
+.clock-m-node {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--main-light);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.clock-m-node.passed {
+  background: var(--main);
+  border-color: var(--main);
+  box-shadow: 0 0 10px var(--main);
+}
+
 /* ================= 响应式 ================= */
 @media (orientation: portrait) and (max-width: 700px) {
-  /* 手机竖屏时显示提示，隐藏时钟 */
   .rotate-hint { display: flex; }
   .clock-container { display: none; }
 }
 
 @media (orientation: landscape), (min-width: 701px) {
-  /* 横屏或电脑时显示时钟，隐藏提示 */
   .rotate-hint { display: none; }
   .clock-container { 
     display: flex; 
-    /* 关键点1：使用动态视口高度，完美适配手机横屏时的真实高度 */
     height: 100dvh; 
-    height: 100vh; /* 老设备兜底 */
-    overflow: hidden; /* 防止内容意外溢出 */
+    height: 100vh; 
+    overflow: hidden; 
   }
 }
 
 /* ================= 手机横屏专属微调 ================= */
 @media (orientation: landscape) and (max-height: 500px) {
-  /* 关键点2：手机横屏时，压缩容器内边距 */
-  .clock-container {
-    padding: 1.5vh 2vw;
-  }
-
-  /* 压缩顶部区域，让出空间给底部 */
-  .clock-top {
-    margin-bottom: 1vh;
-  }
-
-  /* 缩小中间时钟的数字，防止把盒子撑爆 */
-  .flip-clock {
-    font-size: 6vw; /* 原来是 8vw */
-  }
-  .flip-colon {
-    font-size: 5vw;
-  }
-
-  /* 缩小左右两边文字的尺寸 */
-  .box-days .c-label { font-size: 1rem; margin-bottom: 0.5vh; }
-  .box-days .c-value { font-size: 5vw; }
-  .box-days .c-unit { font-size: 1rem; }
+  .clock-container { padding: 1vh 2vw; }
+  .clock-top { margin-bottom: 1vh; gap: 1.5vw; }
+  .clock-column { gap: 1vh; }
   
-  .c-cd-item { font-size: 0.9rem; }
-  .c-cd-item span:last-child { font-size: 1.5rem; }
+  .box-days .c-label { font-size: 0.85rem; margin-bottom: 0.5vh; }
+  .box-days .c-value #clock-days { font-size: 4vw; margin-bottom: 2px; }
+  .box-days .c-unit { font-size: 0.85rem; font-weight: normal; }
+  
+  .box-cd .c-cd-title { font-size: 0.85rem; margin-bottom: 0.5vh; }
+  .box-cd .c-cd-value span { font-size: 4vw; }
 
-  /* 压缩底部里程碑的高度 */
-  .clock-bottom {
-    padding: 5px 15px;
-    flex-shrink: 0; /* 防止被顶部挤压 */
-  }
-  
-  .clock-m-marker img {
-    width: 30px; /* 缩小奔跑的小人 */
-  }
-  
-  .clock-m-labels {
-    margin-top: 5px;
-    height: 15px;
-  }
-  .clock-m-label {
-    font-size: 0.65rem;
-  }
+  .flip-clock { font-size: 10vw; }
+  .flip-colon { font-size: 8vw; }
+  .flip-digit { border-radius: 10px; }
+
+  .clock-bottom { padding: 5px 15px; flex-shrink: 0; }
+  .clock-m-marker img { width: 30px; }
+  .clock-m-labels { margin-top: 5px; height: 15px; }
+  .clock-m-label { font-size: 0.65rem; white-space: nowrap; }
+  .clock-m-node { width: 10px; height: 10px; }
 }
