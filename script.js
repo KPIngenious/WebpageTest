@@ -149,8 +149,8 @@ function createPetal(instant) {
     petal.remove();
   });
 
-  // ★ 关键：安全兜底，最迟（动画时长 + 3秒）强制删除，防止内存泄漏
-  const lifeTime = (duration + 3) * 1000;
+  // ★ 关键：安全兜底，最迟（动画时长 + 6秒）强制删除，防止内存泄漏
+  const lifeTime = (duration + 6) * 1000;
   setTimeout(() => {
     if (petal.parentNode) {
       petal.remove();
