@@ -418,3 +418,54 @@ if (photoWall) {
     photoWall.appendChild(img);
   });
 }
+
+/* ========== 9. 照片墙导航按钮 ========== */
+const photoNavBtn = document.getElementById("photo-nav-btn");
+const photoSection = document.querySelector(".photo-wall-section");
+const photoTitle = document.querySelector(".photo-wall-title"); // 获取标题元素
+
+// 检测是否到达照片墙区域的函数
+function checkPhotoSectionPosition() {
+  if (!photoSection || !photoNavBtn) return;
+  
+  // 获取标题距离屏幕顶部的位置
+  const rect = photoTitle.getBoundingClientRect();
+  
+  // 条件：当“我们的时光”这个标题进入了屏幕（距离顶部小于屏幕高度的 80%）
+  // 就认为已经到达了照片墙区域
+  if (rect.top < window.innerHeight * 0.4) {
+    photoNavBtn.textContent = "⬆️";
+    photoNavBtn.title = "回到顶部";
+  } else {
+    photoNavBtn.textContent = "📸";
+    photoNavBtn.title = "前往照片墙";
+  }
+}
+
+// 滚动时实时检测
+window.addEventListener("scroll", checkPhotoSectionPosition);
+
+// 点击按钮的逻辑
+if (photoNavBtn && photoSection) {
+  photoNavBtn.addEventListener("click", () => {
+    const rect = photoTitle.getBoundingClientRect();
+    
+    // 如果标题已经出现在视野中，说明在下面了，回顶部
+    if (rect.top < window.innerHeight * 0.4) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    } else {
+      // 否则，传送到照片墙区域
+      // 我们传送到比标题稍微靠上一点的位置，视觉上更舒服
+      window.scrollTo({
+        top: photoSection.offsetTop + 350, 
+        behavior: "smooth"
+      });
+    }
+  });
+  
+  // 页面刚加载时先检查一次
+  checkPhotoSectionPosition();
+}
