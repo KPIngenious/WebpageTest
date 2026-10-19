@@ -95,8 +95,14 @@ body {
   padding-bottom: 2px;
   cursor: pointer;
   z-index: 100;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
 }
+
+/* ★ 当 body 有 hide-buttons 时，按钮向右滑出屏幕隐藏 */
+body.hide-buttons .theme-btn {
+  transform: translateX(100px) !important;
+}
+
 .theme-btn:hover {
   transform: scale(1.1);
 }
