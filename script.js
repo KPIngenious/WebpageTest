@@ -400,39 +400,57 @@ setInterval(updateCountdowns, 1000 * 60 * 60);
 
 /* ========== 8. 全屏模式切换逻辑 ========== */
 const fullscreenBtn = document.getElementById("fullscreen-btn");
+const clockTimeEl = document.getElementById("clock-time");
 
 fullscreenBtn.addEventListener("click", () => {
   if (!document.body.classList.contains("clock-mode")) {
-    // 进入全屏模式
+    // 1. 先强行切换视图（这一步绝对不会被浏览器拦截）
     document.body.classList.add("clock-mode");
     fullscreenBtn.textContent = "✖";
     
-    // 尝试请求浏览器全屏（隐藏地址栏，针对手机和电脑）
+    // ★ 强制把时钟变红（如果看到了红色，说明代码绝对执行了）
+    if (clockTimeEl) clockTimeEl.style.color = "#ff0000";
+
+    // 2. 然后再尝试请求全屏（即使失败也不影响上面视图的切换）
     if (document.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen().catch(() => {});
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen().catch(() => {});
     }
 
-    // 立即更新一次数据，避免等待
+    // 立即更新一次数据
     updateCounter();
     updateCountdowns();
-    
-    // 强制重绘一下里程碑进度
     setTimeout(updateMilestone, 100);
+    
   } else {
     // 退出全屏模式
     document.body.classList.remove("clock-mode");
     fullscreenBtn.textContent = "⛶";
     
+    // 恢复原本的颜色
+    if (clockTimeEl) clockTimeEl.style.color = "";
+
     if (document.exitFullscreen && document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
+    } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
+      document.webkitExitFullscreen().catch(() => {});
     }
   }
 });
 
-// 监听系统自带的全屏退出（比如按了 Esc 或 安卓返回键）
+// 监听系统自带的全屏退出
 document.addEventListener("fullscreenchange", () => {
   if (!document.fullscreenElement && document.body.classList.contains("clock-mode")) {
     document.body.classList.remove("clock-mode");
     fullscreenBtn.textContent = "⛶";
+    if (clockTimeEl) clockTimeEl.style.color = "";
+  }
+});
+document.addEventListener("webkitfullscreenchange", () => {
+  if (!document.webkitFullscreenElement && document.body.classList.contains("clock-mode")) {
+    document.body.classList.remove("clock-mode");
+    fullscreenBtn.textContent = "⛶";
+    if (clockTimeEl) clockTimeEl.style.color = "";
   }
 });
