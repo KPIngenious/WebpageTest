@@ -21,7 +21,7 @@ body.theme-fun {
   --text: #e8dcc8;
   --text-light: #8a7a68;
   --text-mid: #b8a898;
-  --card-bg: #151014;
+  --card-bg: #2a2117; /* 全局卡片底色统一调亮 */
   --dot-border: #0a0a0f;
   --petal-bg: none;
 }
@@ -107,7 +107,7 @@ body {
 }
 
 body.theme-fun .theme-btn {
-  background: #151014;
+  background: #1a1a1a;
   border: 1px solid #c9a04a;
   box-shadow: 0 4px 16px rgba(0,0,0,0.5);
 }
@@ -361,8 +361,10 @@ body.theme-fun .counter .number {
   border: 1px solid transparent; 
 }
 
+/* ★ 1. 正常模式：倒计时卡片背景 */
 body.theme-fun .countdown-card {
-  border: 1px solid #1a1215;
+  background: #2a2117;
+  border: 1px solid #5a4a34;
   box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,160,74,0.08);
 }
 
@@ -520,14 +522,16 @@ body.theme-fun .event.right::after { left: -20px; }
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
+
+/* ★ 2. 正常模式：时间线卡片背景 */
 body.theme-fun .event .card {
-  background: #1a1215;
-  border: 1px solid #3a2e24;
+  background: #2a2117;
+  border: 1px solid #5a4a34;
   box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,160,74,0.08);
 }
 body.theme-fun .event .card:hover {
-  border-color: #5a4a34;
-  box-shadow: 0 10px 32px rgba(201,160,74,0.18), inset 0 1px 0 rgba(201,160,74,0.15);
+  border-color: #c9a04a;
+  box-shadow: 0 10px 32px rgba(201,160,74,0.25), inset 0 1px 0 rgba(201,160,74,0.3);
 }
 .event .card h3 {
   font-size: 1.1rem;
@@ -650,7 +654,7 @@ body.theme-fun .event .card:hover {
 }
 
 body.theme-fun .photo-wall img {
-  border: 1px solid #3a2e24;
+  border: 1px solid #5a4a34;
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
@@ -799,7 +803,7 @@ body.theme-fun .clock-ampm {
   border-color: var(--main);
 }
 body.theme-fun .clock-toggle-btn {
-  border-color: #3a2e24;
+  border-color: #5a4a34;
   color: #b8a898;
 }
 body.theme-fun .clock-toggle-btn:hover {
@@ -808,10 +812,19 @@ body.theme-fun .clock-toggle-btn:hover {
   border-color: #c9a04a;
 }
 
+/* ★ 3. 全屏模式：总天数卡片、倒计时卡片背景 */
 body.theme-fun .clock-box {
-  background: #1a1215;
-  border-color: #3a2e24;
+  background: #2a2117;
+  border-color: #5a4a34;
   box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+/* 万兽之王模式下，中间时钟大盒子的背景 */
+body.theme-fun .center-col .clock-box {
+  background: #1a1215; 
+  border: 1px solid #3a2e24; 
+  border-radius: 20px;       
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6); 
 }
 
 .box-days .c-label {
@@ -878,9 +891,9 @@ body.theme-fun .clock-box {
 }
 
 body.theme-fun .flip-digit {
-  background: #15101a;
+  background: #1a1215;
   border: 1px solid #3a2e24;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 0 10px rgba(201, 160, 74, 0.1);
 }
 
 .flip-colon {
@@ -900,9 +913,11 @@ body.theme-fun .flip-digit {
   align-items: center;
   border: 1px solid var(--main-light);
 }
+
+/* ★ 4. 全屏模式：里程碑卡片背景 */
 body.theme-fun .clock-bottom {
-  background: #1a1215;
-  border-color: #3a2e24;
+  background: #2a2117;
+  border-color: #5a4a34;
 }
 .clock-milestone {
   width: 100%;
