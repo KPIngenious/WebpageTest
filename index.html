@@ -127,22 +127,41 @@
   <!-- 横屏/电脑端布局 -->
   <div class="clock-container">
     <div class="clock-top">
-      <div class="clock-box box-days">
-        <div class="c-label">在一起</div>
-        <div class="c-value"><span id="clock-days">0</span> <span class="c-unit">天</span></div>
+      
+      <!-- 左侧列：天数 + 周年 -->
+      <div class="clock-column left-col">
+        <div class="clock-box box-days">
+          <div class="c-label">在一起</div>
+          <div class="c-value"><span id="clock-days">0</span> <span class="c-unit">天</span></div>
+        </div>
+        <div class="clock-box box-cd">
+          <div class="c-cd-title" id="clock-title-ann">距离周年</div>
+          <div class="c-cd-value"><span id="clock-cd-ann">--</span> 天</div>
+        </div>
       </div>
       
-      <div class="clock-box box-time">
-        <div class="flip-clock" id="flip-clock"></div>
+      <!-- 中间列：时钟 -->
+      <div class="clock-column center-col">
+        <div class="clock-box box-time">
+          <div class="flip-clock" id="flip-clock"></div>
+        </div>
       </div>
 
-      <div class="clock-box box-countdowns">
-        <div class="c-cd-item"><span id="clock-title-ann">周年</span> <span id="clock-cd-ann">--</span>天</div>
-        <div class="c-cd-item"><span id="clock-title-her">Cindy</span> <span id="clock-cd-her">--</span>天</div>
-        <div class="c-cd-item"><span id="clock-title-him">Tang</span> <span id="clock-cd-him">--</span>天</div>
+      <!-- 右侧列：Cindy + Tang -->
+      <div class="clock-column right-col">
+        <div class="clock-box box-cd">
+          <div class="c-cd-title" id="clock-title-her">距离Cindy</div>
+          <div class="c-cd-value"><span id="clock-cd-her">--</span> 天</div>
+        </div>
+        <div class="clock-box box-cd">
+          <div class="c-cd-title" id="clock-title-him">距离Tang</div>
+          <div class="c-cd-value"><span id="clock-cd-him">--</span> 天</div>
+        </div>
       </div>
+
     </div>
 
+    <!-- 底部里程碑 -->
     <div class="clock-bottom">
       <div class="clock-milestone">
         <div class="clock-m-bar">
