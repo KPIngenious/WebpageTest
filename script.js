@@ -160,6 +160,16 @@ function createPetal(instant) {
   sakuraContainer.appendChild(petal);
 }
 
+function fillPetals() {
+  sakuraContainer.innerHTML = "";
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    createPetal(true);
+  }
+}
+
+fillPetals();
+setInterval(() => createPetal(false), PETAL_INTERVAL);
+
 
 /* ========== 4. 滚动淡入 + 淡出 ========== */
 const events = document.querySelectorAll(".event");
