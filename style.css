@@ -200,9 +200,10 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
 .clock-milestone .milestone-bar { width: 100%; height: 40px; }
 .clock-milestone .milestone-label { font-size: 0.8rem; }
 
+
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
-  /* 主页面 */
+  /* （前面的正常主页样式保留，不用动） */
   header { padding: 20px 20px 20px; }
   header h1 { font-size: 2.5rem; letter-spacing: 2px; }
   body.theme-fun header h1 { letter-spacing: 5px; }
@@ -224,51 +225,49 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   body.theme-fun .event::after { width: 24px; height: 24px; }
 
 
-  /* ========== 全屏时钟模式：手机端极限压缩 ========== */
+  /* ========== 全屏时钟模式：手机极限适配 ========== */
   #clock-view { 
+    /* 使用 100dvh 适配手机实际可见高度，如果浏览器不支持就用 100vh */
+    height: 100vh;
+    height: 100dvh; 
     padding: 1vh 2vw; 
     overflow: hidden; 
-    height: 100vh;
-    width: 100vw;
-    display: none; 
     box-sizing: border-box;
+    display: none; 
   }
+  
   body.clock-mode #clock-view {
     display: grid;
-    grid-template-rows: 8fr 2fr; /* 上下比例 8:2 */
+    grid-template-rows: 7fr 3fr; /* 上方占70%，下方里程碑占30%保证可见 */
   }
 
   /* 上半部分：2.5 : 5 : 2.5 */
   .clock-layout { 
     display: grid;
-    grid-template-columns: 2.5fr 5fr 2.5fr; /* 左右比例 */
+    grid-template-columns: 2.5fr 5fr 2.5fr;
     align-items: center;
     width: 100%;
     height: 100%;
     margin: 0;
   }
   
-  .clock-panel { 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    gap: 0.5vh;
-  }
-
+  .clock-panel { display: flex; flex-direction: column; justify-content: center; gap: 0.5vh; }
   .clock-left { align-items: flex-start; }
   .clock-center { align-items: center; }
   .clock-right { align-items: flex-end; gap: 1vh; }
 
-  /* 字体极限压缩 */
   .clock-label { font-size: 2vw; }
   .clock-days { font-size: 7vw; line-height: 1; }
   .clock-days small { font-size: 2.5vw; }
   .clock-subdetail { font-size: 2vw; }
 
+  /* ★ 重点测试：时钟变红 */
   #clock-time { 
     font-size: 11vw; 
     letter-spacing: 0px; 
     line-height: 1;
+    color: #ff0000 !important; 
+    font-weight: 900;
   }
 
   .clock-cd-title { font-size: 2vw; }
@@ -278,30 +277,37 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   /* 下半部分：里程碑 */
   .clock-milestone {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* 从顶部开始对齐 */
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding-bottom: 2vh; /* 往上抬一点，防止被手机底部横条挡住 */
+    padding-top: 2vh; /* 留出空间给跑动的小人 */
+    padding-bottom: 5vh; /* 抬高防遮挡 */
+    position: relative;
+    z-index: 10;
   }
   
+  /* 强制显示进度条的底槽 */
   .clock-milestone .milestone-bar {
     width: 100%;
-    height: 4vh;
+    height: 10vh;
   }
 
-  /* 缩小节点和标签，避免挤爆 */
+  /* 强制显示线 */
+  .clock-milestone .milestone-line { height: 4px; background: #000; opacity: 0.5; }
+
+  /* 缩小节点和标签 */
   .clock-milestone .milestone-node { width: 3vw; height: 3vw; }
   .clock-milestone .milestone-label { 
-    font-size: 2vw; 
-    top: 4vh; /* 放到线下面 */
+    font-size: 2.5vw; 
+    top: 4vh !important; 
+    color: var(--main);
   }
 
   .clock-milestone .milestone-marker img {
     width: 10vw; 
+    margin-top: -3vh; /* 让小人骑在线上 */
   }
 
-  /* 竖屏提示 */
   @media (orientation: portrait) {
     .clock-hint { display: flex; justify-content: center; align-items: center; height: 100%; font-size: 4vw; }
     .clock-layout, .clock-milestone { display: none !important; }
