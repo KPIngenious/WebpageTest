@@ -158,7 +158,7 @@ body.theme-fun .event .card:hover { border-color: #5a4a34; box-shadow: 0 10px 32
 .lightbox.show { display: flex; }
 .lightbox img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 
-/* ========== 全屏时钟模式 (Clock View) ========== */
+/* ========== 全屏时钟模式基础排版 (桌面端) ========== */
 #clock-view {
   position: fixed; inset: 0; z-index: 50;
   background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
@@ -171,11 +171,7 @@ body.clock-mode .floating-buttons { opacity: 0.2; transition: opacity 0.3s; z-in
 body.clock-mode .floating-buttons:hover { opacity: 1; }
 
 .clock-hint { display: none; text-align: center; color: var(--text-light); font-size: 1.2rem; padding: 20vh 0; }
-
-/* 时钟模式上部 */
-.clock-layout {
-  display: flex; justify-content: space-between; align-items: center; flex: 1;
-}
+.clock-layout { display: flex; justify-content: space-between; align-items: center; flex: 1; }
 .clock-panel { flex: 1; display: flex; flex-direction: column; }
 .clock-left { align-items: flex-start; }
 .clock-center { align-items: center; justify-content: center; }
@@ -185,25 +181,19 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
 .clock-days { font-size: 4rem; font-weight: bold; color: var(--main); line-height: 1.2; text-shadow: 0 0 20px rgba(217,140,140,0.2); }
 .clock-days small { font-size: 1.5rem; }
 .clock-subdetail { font-size: 1.2rem; color: var(--text-mid); }
-
 #clock-time { font-size: 5rem; font-weight: bold; color: var(--text); letter-spacing: 5px; font-variant-numeric: tabular-nums; }
-
 .clock-cd-item { text-align: right; }
 .clock-cd-title { font-size: 0.9rem; color: var(--text-mid); }
 .clock-cd-val { font-size: 1.8rem; font-weight: bold; color: var(--main); }
 .clock-cd-val span { font-size: 2.5rem; }
-
-/* 时钟模式下部里程碑 */
-.clock-milestone {
-  height: 15vh; display: flex; align-items: center; width: 100%;
-}
+.clock-milestone { height: 15vh; display: flex; align-items: center; width: 100%; }
 .clock-milestone .milestone-bar { width: 100%; height: 40px; }
 .clock-milestone .milestone-label { font-size: 0.8rem; }
 
 
 /* ========== 手机适配 ========== */
 @media (max-width: 700px) {
-  /* （前面的正常主页样式保留，不用动） */
+  /* 主页面 */
   header { padding: 20px 20px 20px; }
   header h1 { font-size: 2.5rem; letter-spacing: 2px; }
   body.theme-fun header h1 { letter-spacing: 5px; }
@@ -224,50 +214,50 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   .event::after, .event.left::after, .event.right::after { left: 18px !important; right: auto !important; transform: translate(-50%, -50%) !important; top: 30px !important; }
   body.theme-fun .event::after { width: 24px; height: 24px; }
 
-
-  /* ========== 全屏时钟模式：手机极限适配 ========== */
+  /* ========== 全屏时钟模式：手机端修复 ========== */
   #clock-view { 
-    /* 使用 100dvh 适配手机实际可见高度，如果浏览器不支持就用 100vh */
     height: 100vh;
     height: 100dvh; 
     padding: 1vh 2vw; 
     overflow: hidden; 
     box-sizing: border-box;
     display: none; 
+    flex-direction: column; /* 强制覆盖 flex */
   }
   
   body.clock-mode #clock-view {
-    display: grid;
-    grid-template-rows: 7fr 3fr; /* 上方占70%，下方里程碑占30%保证可见 */
+    display: flex; /* 用 flex 替代 grid，防止被覆盖 */
+    flex-direction: column;
   }
 
-  /* 上半部分：2.5 : 5 : 2.5 */
+  /* 上半部分 */
   .clock-layout { 
-    display: grid;
-    grid-template-columns: 2.5fr 5fr 2.5fr;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 100%;
+    flex: 8; /* 上方占 80% */
     margin: 0;
   }
   
+  /* 比例 2.5 : 5 : 2.5 */
   .clock-panel { display: flex; flex-direction: column; justify-content: center; gap: 0.5vh; }
-  .clock-left { align-items: flex-start; }
-  .clock-center { align-items: center; }
-  .clock-right { align-items: flex-end; gap: 1vh; }
+  .clock-left { flex: 2.5; align-items: flex-start; }
+  .clock-center { flex: 5; align-items: center; }
+  .clock-right { flex: 2.5; align-items: flex-end; gap: 1vh; }
 
+  /* 缩小字体 */
   .clock-label { font-size: 2vw; }
   .clock-days { font-size: 7vw; line-height: 1; }
   .clock-days small { font-size: 2.5vw; }
   .clock-subdetail { font-size: 2vw; }
 
-  /* ★ 重点测试：时钟变红 */
+  /* 测试红色时钟 */
   #clock-time { 
-    font-size: 11vw; 
-    letter-spacing: 0px; 
-    line-height: 1;
+    font-size: 11vw !important; 
     color: #ff0000 !important; 
-    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
   }
 
   .clock-cd-title { font-size: 2vw; }
@@ -277,25 +267,24 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
   /* 下半部分：里程碑 */
   .clock-milestone {
     display: flex;
-    align-items: flex-start; /* 从顶部开始对齐 */
+    align-items: flex-start;
+    flex: 2; /* 下方占 20% */
     width: 100%;
-    height: 100%;
-    padding-top: 2vh; /* 留出空间给跑动的小人 */
-    padding-bottom: 5vh; /* 抬高防遮挡 */
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     position: relative;
     z-index: 10;
   }
   
-  /* 强制显示进度条的底槽 */
+  /* 强制压扁进度条，防止超出 */
   .clock-milestone .milestone-bar {
     width: 100%;
-    height: 10vh;
+    height: 5vh; 
   }
 
-  /* 强制显示线 */
-  .clock-milestone .milestone-line { height: 4px; background: #000; opacity: 0.5; }
+  /* 强制显示线，方便测试 */
+  .clock-milestone .milestone-line { height: 4px; background: #ff0000; opacity: 0.5; }
 
-  /* 缩小节点和标签 */
   .clock-milestone .milestone-node { width: 3vw; height: 3vw; }
   .clock-milestone .milestone-label { 
     font-size: 2.5vw; 
@@ -305,11 +294,20 @@ body.clock-mode .floating-buttons:hover { opacity: 1; }
 
   .clock-milestone .milestone-marker img {
     width: 10vw; 
-    margin-top: -3vh; /* 让小人骑在线上 */
+    margin-top: -3vh; 
   }
+}
 
-  @media (orientation: portrait) {
-    .clock-hint { display: flex; justify-content: center; align-items: center; height: 100%; font-size: 4vw; }
-    .clock-layout, .clock-milestone { display: none !important; }
+/* 独立在手机外层的竖屏提示，防止嵌套崩溃 */
+@media (max-width: 700px) and (orientation: portrait) {
+  .clock-hint { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100%; 
+    font-size: 4vw; 
+  }
+  .clock-layout, .clock-milestone { 
+    display: none !important; 
   }
 }
