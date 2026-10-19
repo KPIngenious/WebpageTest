@@ -703,3 +703,230 @@ body.theme-fun .photo-wall img {
     gap: 10px;
   }
 }
+
+/* ========== 时钟按钮 (最上层) ========== */
+.clock-btn {
+  bottom: 130px;
+  font-size: 20px;
+  z-index: 10000 !important; /* 压过遮罩层 */
+}
+
+/* 把主题按钮也提上来，方便全屏下切换主题 */
+.theme-btn {
+  z-index: 10000 !important;
+}
+
+/* 隐藏照片墙按钮的逻辑（在 JS 中控制 class） */
+body.in-clock-mode .photo-nav-btn {
+  display: none !important;
+}
+
+/* ========== 时钟模式遮罩层 ========== */
+.clock-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-top);
+  z-index: 9998; /* 比按钮低，比页面高 */
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.clock-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+
+/* 竖屏提示 */
+.rotate-hint {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text);
+}
+.rotate-icon {
+  font-size: 4rem;
+  animation: rotatePhone 2s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+@keyframes rotatePhone {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
+/* 时钟布局 */
+.clock-container {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 2vh 3vw;
+  box-sizing: border-box;
+}
+
+.clock-top {
+  flex: 8;
+  display: flex;
+  gap: 2vw;
+  margin-bottom: 2vh;
+}
+
+.clock-bottom {
+  flex: 2;
+  display: flex;
+  background: rgba(0,0,0,0.03);
+  border-radius: 20px;
+  padding: 10px 20px;
+  align-items: center;
+}
+body.theme-fun .clock-bottom {
+  background: rgba(255,255,255,0.03);
+}
+
+/* 顶部三区块 */
+.clock-box {
+  background: var(--card-bg);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--main-light);
+  transition: background 0.6s ease;
+}
+body.theme-fun .clock-box {
+  background: #1a1215;
+  border-color: #3a2e24;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+.box-days { flex: 2.5; }
+.box-time { flex: 5; }
+.box-countdowns { flex: 2.5; }
+
+/* 左侧天数 */
+.box-days .c-label {
+  font-size: 1.5rem;
+  color: var(--text-mid);
+  letter-spacing: 4px;
+  margin-bottom: 1vh;
+}
+.box-days .c-value {
+  font-size: 6vw;
+  font-weight: bold;
+  color: var(--main);
+  line-height: 1;
+}
+.box-days .c-unit { font-size: 1.5rem; }
+
+/* 中间时钟 */
+.flip-clock {
+  display: flex;
+  gap: 0.5vw;
+  font-size: 8vw;
+  font-weight: bold;
+  color: var(--main);
+}
+.flip-digit {
+  position: relative;
+  display: inline-block;
+  background: var(--bg-bottom);
+  border-radius: 12px;
+  padding: 0 1vw;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+body.theme-fun .flip-digit {
+  background: #0a0a0f;
+}
+.flip-colon {
+  display: flex;
+  align-items: center;
+  font-size: 6vw;
+  transform: translateY(-5%);
+}
+
+/* 右侧倒计时 */
+.box-countdowns {
+  justify-content: space-evenly;
+  padding: 2vh 0;
+}
+.c-cd-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  color: var(--text-mid);
+}
+.c-cd-item span:last-child {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--main);
+}
+
+/* 底部里程碑 */
+.clock-milestone {
+  width: 100%;
+  position: relative;
+}
+.clock-m-bar {
+  position: relative;
+  height: 6px;
+  background: var(--main-light);
+  border-radius: 3px;
+  width: 90%;
+  margin: 0 auto;
+}
+.clock-m-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--main);
+  border-radius: 3px;
+  width: 0%;
+  box-shadow: 0 0 10px var(--main);
+  transition: width 1s ease-out;
+}
+.clock-m-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 1s ease-out;
+}
+.clock-m-marker img {
+  width: 50px;
+  height: auto;
+  filter: drop-shadow(0 0 5px var(--main));
+}
+.clock-m-labels {
+  position: relative;
+  width: 90%;
+  margin: 10px auto 0;
+  height: 20px;
+}
+.clock-m-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+.clock-m-label.passed {
+  color: var(--main);
+  font-weight: bold;
+}
+
+/* 响应式 */
+@media (orientation: portrait) and (max-width: 700px) {
+  .rotate-hint { display: flex; }
+  .clock-container { display: none; }
+}
+@media (orientation: landscape), (min-width: 701px) {
+  .rotate-hint { display: none; }
+  .clock-container { display: flex; }
+}
