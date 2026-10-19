@@ -469,3 +469,140 @@ if (photoNavBtn && photoSection) {
   // 页面刚加载时先检查一次
   checkPhotoSectionPosition();
 }
+
+/* ========== 10. 时钟模式逻辑 ========== */
+const clockBtn = document.getElementById("clock-btn");
+const clockOverlay = document.getElementById("clock-overlay");
+const closeClockMobile = document.getElementById("close-clock-mobile");
+
+// 生成电子时钟的 DOM 结构
+function initFlipClock() {
+  const flipClock = document.getElementById("flip-clock");
+  if (!flipClock) return;
+  flipClock.innerHTML = `
+    <div class="flip-digit" id="clock-h1">0</div>
+    <div class="flip-digit" id="clock-h2">0</div>
+    <div class="flip-colon">:</div>
+    <div class="flip-digit" id="clock-m1">0</div>
+    <div class="flip-digit" id="clock-m2">0</div>
+    <div class="flip-colon">:</div>
+    <div class="flip-digit" id="clock-s1">0</div>
+    <div class="flip-digit" id="clock-s2">0</div>
+  `;
+}
+initFlipClock();
+
+// 翻牌数字动画
+function flipDigit(id, newValue) {
+  const el = document.getElementById(id);
+  if (!el || el.textContent === String(newValue)) return;
+  
+  el.style.opacity = "0.3";
+  el.style.transform = "scaleY(0.8)";
+  
+  setTimeout(() => {
+    el.textContent = newValue;
+    el.style.opacity = "1";
+    el.style.transform = "scaleY(1)";
+  }, 150);
+}
+
+// 更新时间钟
+function updateClock() {
+  if (!clockOverlay.classList.contains("show")) return;
+  
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  
+  flipDigit("clock-h1", hh[0]);
+  flipDigit("clock-h2", hh[1]);
+  flipDigit("clock-m1", mm[0]);
+  flipDigit("clock-m2", mm[1]);
+  flipDigit("clock-s1", ss[0]);
+  flipDigit("clock-s2", ss[1]);
+
+  const days = getCurrentDays();
+  document.getElementById("clock-days").textContent = days.toLocaleString();
+
+  document.getElementById("clock-cd-ann").textContent = document.getElementById("cd-anniversary").textContent;
+  document.getElementById("clock-cd-her").textContent = document.getElementById("cd-her").textContent;
+  document.getElementById("clock-cd-him").textContent = document.getElementById("cd-him").textContent;
+
+  const totalDays = 3650;
+  const percent = Math.min((days / totalDays) * 100, 100);
+  document.getElementById("clock-m-fill").style.width = percent + "%";
+  document.getElementById("clock-m-marker").style.left = percent + "%";
+  
+  const labelsContainer = document.getElementById("clock-m-labels");
+  if (labelsContainer.children.length === 0) {
+    const NODE_COUNT = 11;
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const day = Math.round((totalDays / (NODE_COUNT - 1)) * i);
+      const p = (day / totalDays) * 100;
+      const lbl = document.createElement("div");
+      lbl.className = "clock-m-label";
+      lbl.style.left = p + "%";
+      lbl.textContent = i === 0 ? "相遇" : (day / 365).toFixed(0) + "年";
+      labelsContainer.appendChild(lbl);
+    }
+  }
+  
+  const labels = labelsContainer.querySelectorAll(".clock-m-label");
+  labels.forEach((lbl, i) => {
+    const lblDay = Math.round((totalDays / (labels.length - 1)) * i);
+    if (lblDay <= days) lbl.classList.add("passed");
+    else lbl.classList.remove("passed");
+  });
+}
+
+let clockTimer = null;
+
+function toggleClock(enter) {
+  if (enter) {
+    clockOverlay.classList.add("show");
+    document.body.classList.add("in-clock-mode"); // 隐藏照片墙按钮
+    document.body.style.overflow = "hidden"; 
+    
+    // 尝试全屏
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+    
+    updateClock();
+    clockTimer = setInterval(updateClock, 1000);
+    
+    // 更新按钮图标为“关闭”
+    clockBtn.textContent = "❌";
+    clockBtn.title = "退出时钟模式";
+  } else {
+    clockOverlay.classList.remove("show");
+    document.body.classList.remove("in-clock-mode");
+    document.body.style.overflow = ""; 
+    
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+    
+    if (clockTimer) {
+      clearInterval(clockTimer);
+      clockTimer = null;
+    }
+    
+    // 恢复图标
+    clockBtn.textContent = "⏰";
+    clockBtn.title = "进入时钟模式";
+  }
+}
+
+clockBtn.addEventListener("click", () => {
+  const isShowing = clockOverlay.classList.contains("show");
+  toggleClock(!isShowing);
+});
+
+if (closeClockMobile) {
+  closeClockMobile.addEventListener("click", () => {
+    toggleClock(false);
+  });
+}
